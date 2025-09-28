@@ -36,7 +36,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_28_130354) do
     t.integer "category_id", null: false
     t.string "name", null: false
     t.string "name_kana", null: false
-    t.string "pitching_batting"
+    t.integer "pitching_batting"
     t.string "affiliation"
     t.integer "height"
     t.integer "weight"

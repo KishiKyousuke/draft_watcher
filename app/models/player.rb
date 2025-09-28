@@ -7,7 +7,7 @@ class Player < ApplicationRecord
   validates :name_kana, presence: true
   validates :category_id, presence: true
 
-  enum category: {
+  enum :category, {
     high_school: 0,
     university: 1,
     corporate: 2,
@@ -15,7 +15,7 @@ class Player < ApplicationRecord
     other: 4
   }
 
-  enum pitching_batting: {
+  enum :pitching_batting, {
     right_handed_right_batting: 0,
     right_handed_left_batting: 1,
     right_handed_both_batting: 2,

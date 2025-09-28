@@ -5,8 +5,5 @@ class Team < ApplicationRecord
   validates :short_name, presence: true
   validates :league, presence: true
 
-  enum league: {
-    central: 0,
-    pacific: 1
-  }
+  enum :league, { central: 0, pacific: 1 }
 end

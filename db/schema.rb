@@ -56,7 +56,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_28_130354) do
   create_table "teams", force: :cascade do |t|
     t.string "name", null: false
     t.string "short_name", null: false
-    t.string "league", null: false
+    t.integer "league", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

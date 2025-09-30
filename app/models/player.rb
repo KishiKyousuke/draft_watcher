@@ -5,7 +5,7 @@ class Player < ApplicationRecord
 
   validates :name, presence: true
   validates :name_kana, presence: true
-  validates :category_id, presence: true
+  validates :category, presence: true
 
   enum :category, {
     high_school: 0,

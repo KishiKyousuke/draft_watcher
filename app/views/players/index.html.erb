@@ -1,5 +1,9 @@
 <h1>ドラフト候補選手一覧</h1>
 
+<div class="actions">
+  <%= link_to "新規選手登録", new_player_path, class: "btn btn-primary" %>
+</div>
+
 <div class="players-index">
   <% if @players.any? %>
     <table class="table">

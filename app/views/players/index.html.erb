@@ -23,7 +23,7 @@
         <% @players.each do |player| %>
           <tr>
             <td>
-              <strong><%= player.name %></strong><br>
+              <strong><%= link_to player.name, player_path(player) %></strong><br>
               <small><%= player.name_kana %></small>
             </td>
             <td><%= player.category.humanize if player.category %></td>

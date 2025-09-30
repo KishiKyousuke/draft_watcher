@@ -26,12 +26,12 @@
               <strong><%= link_to player.name, player_path(player) %></strong><br>
               <small><%= player.name_kana %></small>
             </td>
-            <td><%= player.category.humanize if player.category %></td>
+            <td><%= t("activerecord.attributes.player.categories.#{player.category}") if player.category %></td>
             <td><%= player.affiliation %></td>
             <td>
               <%= player.positions.map(&:short_name).join(", ") %>
             </td>
-            <td><%= player.pitching_batting.humanize if player.pitching_batting %></td>
+            <td><%= t("activerecord.attributes.player.pitching_battings.#{player.pitching_batting}") if player.pitching_batting %></td>
             <td>
               <% if player.height || player.weight %>
                 <%= "#{player.height}#{t('units.cm')}" if player.height %>

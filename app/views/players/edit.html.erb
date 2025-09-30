@@ -1,4 +1,4 @@
-<h1>選手情報編集</h1>
+<h1><%= t('players.edit.title') %></h1>
 
 <div class="player-form">
   <%= form_with model: @player, local: true do |form| %>
@@ -26,14 +26,8 @@
     <div class="field">
       <%= form.label :category, "カテゴリ" %>
       <%= form.select :category,
-          options_for_select([
-            ['高校生', 'high_school'],
-            ['大学生', 'university'],
-            ['社会人', 'corporate'],
-            ['独立リーグ', 'independent'],
-            ['その他', 'other']
-          ], @player.category),
-          { prompt: '選択してください' },
+          options_for_select(Player.categories.map { |key, _| [t("activerecord.attributes.player.categories.#{key}"), key] }, @player.category),
+          { prompt: t('players.form.select_prompt') },
           { required: true } %>
     </div>
 
@@ -57,15 +51,8 @@
     <div class="field">
       <%= form.label :pitching_batting, "投打" %>
       <%= form.select :pitching_batting,
-          options_for_select([
-            ['右投右打', 'right_handed_right_batting'],
-            ['右投左打', 'right_handed_left_batting'],
-            ['右投両打', 'right_handed_both_batting'],
-            ['左投右打', 'left_handed_right_batting'],
-            ['左投左打', 'left_handed_left_batting'],
-            ['左投両打', 'left_handed_both_batting']
-          ], @player.pitching_batting),
-          { prompt: '選択してください' } %>
+          options_for_select(Player.pitching_battings.map { |key, _| [t("activerecord.attributes.player.pitching_battings.#{key}"), key] }, @player.pitching_batting),
+          { prompt: t('players.form.select_prompt') } %>
     </div>
 
     <div class="field">
@@ -89,9 +76,9 @@
     </div>
 
     <div class="actions">
-      <%= form.submit "更新", class: "btn btn-primary" %>
-      <%= link_to "詳細", player_path(@player), class: "btn btn-secondary" %>
-      <%= link_to "一覧に戻る", players_path, class: "btn btn-secondary" %>
+      <%= form.submit t('players.edit.update'), class: "btn btn-primary" %>
+      <%= link_to t('players.edit.show'), player_path(@player), class: "btn btn-secondary" %>
+      <%= link_to t('players.edit.back_to_index'), players_path, class: "btn btn-secondary" %>
     </div>
   <% end %>
 </div>

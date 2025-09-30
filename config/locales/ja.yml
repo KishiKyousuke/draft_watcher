@@ -17,10 +17,26 @@ ja:
         weight: 体重
         age: 年齢
         description: 寸評
+        categories:
+          high_school: 高校生
+          university: 大学生
+          corporate: 社会人
+          independent: 独立リーグ
+          other: その他
+        pitching_battings:
+          right_handed_right_batting: 右投右打
+          right_handed_left_batting: 右投左打
+          right_handed_both_batting: 右投両打
+          left_handed_right_batting: 左投右打
+          left_handed_left_batting: 左投左打
+          left_handed_both_batting: 左投両打
       team:
         name: チーム名
         short_name: 略称
         league: リーグ
+        leagues:
+          central: セ・リーグ
+          pacific: パ・リーグ
       position:
         name: ポジション名
         short_name: 略称

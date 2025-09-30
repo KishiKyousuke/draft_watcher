@@ -8,7 +8,7 @@
     <table class="details-table">
       <tr>
         <th><%= Player.human_attribute_name(:category) %></th>
-        <td><%= @player.category.humanize if @player.category %></td>
+        <td><%= t("activerecord.attributes.player.categories.#{@player.category}") if @player.category %></td>
       </tr>
       <tr>
         <th><%= Player.human_attribute_name(:affiliation) %></th>
@@ -20,7 +20,7 @@
       </tr>
       <tr>
         <th><%= Player.human_attribute_name(:pitching_batting) %></th>
-        <td><%= @player.pitching_batting.humanize if @player.pitching_batting %></td>
+        <td><%= t("activerecord.attributes.player.pitching_battings.#{@player.pitching_batting}") if @player.pitching_batting %></td>
       </tr>
       <tr>
         <th><%= Player.human_attribute_name(:height) %></th>

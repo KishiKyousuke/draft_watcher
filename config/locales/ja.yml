@@ -1,0 +1,87 @@
+ja:
+  activerecord:
+    models:
+      player: 選手
+      team: チーム
+      position: ポジション
+      draft_result: ドラフト結果
+    attributes:
+      player:
+        name: 名前
+        name_kana: ふりがな
+        category: カテゴリ
+        affiliation: 所属
+        positions: ポジション
+        pitching_batting: 投打
+        height: 身長
+        weight: 体重
+        age: 年齢
+        description: 寸評
+      team:
+        name: チーム名
+        short_name: 略称
+        league: リーグ
+      position:
+        name: ポジション名
+        short_name: 略称
+      draft_result:
+        year: 年度
+        draft_round: 指名順位
+        training_player: 育成指名
+        team: 指名球団
+
+  players:
+    index:
+      title: ドラフト候補選手一覧
+      new_player: 新規選手登録
+      no_players: ドラフト候補選手が登録されていません。
+      height_weight: 身長/体重
+      draft_result: ドラフト結果
+      not_registered: 未登録
+      not_drafted: 未指名
+      training: "(育成)"
+    show:
+      title: 選手詳細
+      edit: 編集
+      delete: 削除
+      back_to_index: 一覧に戻る
+      draft_results: ドラフト結果
+      no_draft_results: ドラフト結果が未登録です。
+      confirm_delete: "%{name}を削除しますか？"
+    new:
+      title: ドラフト候補選手登録
+      register: 登録
+      cancel: キャンセル
+    edit:
+      title: 選手情報編集
+      update: 更新
+      show: 詳細
+      back_to_index: 一覧に戻る
+    form:
+      select_prompt: 選択してください
+      categories:
+        high_school: 高校生
+        university: 大学生
+        corporate: 社会人
+        independent: 独立リーグ
+        other: その他
+      pitching_batting_options:
+        right_handed_right_batting: 右投右打
+        right_handed_left_batting: 右投左打
+        right_handed_both_batting: 右投両打
+        left_handed_right_batting: 左投右打
+        left_handed_left_batting: 左投左打
+        left_handed_both_batting: 左投両打
+      height_unit: "(cm)"
+      weight_unit: "(kg)"
+
+  notices:
+    player_created: 選手を登録しました。
+    player_updated: 選手情報を更新しました。
+    player_deleted: 選手を削除しました。
+
+  units:
+    cm: cm
+    kg: kg
+    age: 歳
+    year: 年

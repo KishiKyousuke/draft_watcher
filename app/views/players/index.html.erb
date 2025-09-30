@@ -1,7 +1,7 @@
-<h1>ドラフト候補選手一覧</h1>
+<h1><%= t('players.index.title') %></h1>
 
 <div class="actions">
-  <%= link_to "新規選手登録", new_player_path, class: "btn btn-primary" %>
+  <%= link_to t('players.index.new_player'), new_player_path, class: "btn btn-primary" %>
 </div>
 
 <div class="players-index">
@@ -9,14 +9,14 @@
     <table class="table">
       <thead>
         <tr>
-          <th>名前</th>
-          <th>カテゴリ</th>
-          <th>所属</th>
-          <th>ポジション</th>
-          <th>投打</th>
-          <th>身長/体重</th>
-          <th>年齢</th>
-          <th>ドラフト結果</th>
+          <th><%= Player.human_attribute_name(:name) %></th>
+          <th><%= Player.human_attribute_name(:category) %></th>
+          <th><%= Player.human_attribute_name(:affiliation) %></th>
+          <th><%= Player.human_attribute_name(:positions) %></th>
+          <th><%= Player.human_attribute_name(:pitching_batting) %></th>
+          <th><%= t('players.index.height_weight') %></th>
+          <th><%= Player.human_attribute_name(:age) %></th>
+          <th><%= t('players.index.draft_result') %></th>
         </tr>
       </thead>
       <tbody>
@@ -34,27 +34,27 @@
             <td><%= player.pitching_batting.humanize if player.pitching_batting %></td>
             <td>
               <% if player.height || player.weight %>
-                <%= "#{player.height}cm" if player.height %>
-                <%= "#{player.weight}kg" if player.weight %>
+                <%= "#{player.height}#{t('units.cm')}" if player.height %>
+                <%= "#{player.weight}#{t('units.kg')}" if player.weight %>
               <% end %>
             </td>
-            <td><%= "#{player.age}歳" if player.age %></td>
+            <td><%= "#{player.age}#{t('units.age')}" if player.age %></td>
             <td>
               <% if player.draft_results.any? %>
                 <% player.draft_results.each do |result| %>
                   <div>
-                    <%= result.year %>年
+                    <%= result.year %><%= t('units.year') %>
                     <% if result.team %>
                       <%= result.team.short_name %>
                       <%= "#{result.draft_round}位" if result.draft_round %>
-                      <%= "(育成)" if result.training_player %>
+                      <%= t('players.index.training') if result.training_player %>
                     <% else %>
-                      未指名
+                      <%= t('players.index.not_drafted') %>
                     <% end %>
                   </div>
                 <% end %>
               <% else %>
-                未登録
+                <%= t('players.index.not_registered') %>
               <% end %>
             </td>
           </tr>
@@ -62,6 +62,6 @@
       </tbody>
     </table>
   <% else %>
-    <p>ドラフト候補選手が登録されていません。</p>
+    <p><%= t('players.index.no_players') %></p>
   <% end %>
 </div>

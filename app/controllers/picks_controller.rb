@@ -5,11 +5,8 @@ class PicksController < ApplicationController
 
   def new
     @pick = Pick.new
-    if params[:player_id].present?
-      @pick.player_id = params[:player_id]
-      @selected_player = Player.find(params[:player_id])
-    end
-    @players = Player.all
+    @pick.player_id = params[:player_id]
+    @selected_player = Player.find(params[:player_id])
     @teams = Team.all
   end
 
@@ -19,7 +16,7 @@ class PicksController < ApplicationController
     if @pick.save
       redirect_to picks_path, notice: t('notices.pick_created')
     else
-      @players = Player.all
+      @selected_player = Player.find(@pick.player_id)
       @teams = Team.all
       render :new, status: :unprocessable_entity
     end

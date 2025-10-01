@@ -1,9 +1,5 @@
 <h1>
-  <% if @selected_player %>
-    <%= t('picks.new.title_for_player', player_name: @selected_player.name) %>
-  <% else %>
-    <%= t('picks.new.title') %>
-  <% end %>
+  <%= t('picks.new.title_for_player', player_name: @selected_player.name) %>
 </h1>
 
 <div class="pick-form">
@@ -21,17 +17,11 @@
 
     <div class="field">
       <%= form.label :player_id, Pick.human_attribute_name(:player) %>
-      <% if @selected_player %>
-        <div class="selected-player">
-          <strong><%= @selected_player.name %></strong>
-          <small>(<%= @selected_player.name_kana %>)</small>
-          <%= form.hidden_field :player_id %>
-        </div>
-      <% else %>
-        <%= form.collection_select :player_id, @players, :id, :name,
-            { prompt: t('picks.form.select_player') },
-            { required: true } %>
-      <% end %>
+      <div class="selected-player">
+        <strong><%= @selected_player.name %></strong>
+        <small>(<%= @selected_player.name_kana %>)</small>
+        <%= form.hidden_field :player_id %>
+      </div>
     </div>
 
     <div class="field">

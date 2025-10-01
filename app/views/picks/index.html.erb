@@ -1,0 +1,34 @@
+<h1>指名結果一覧</h1>
+
+<div class="actions">
+  <%= link_to "新規指名結果登録", new_pick_path, class: "btn btn-primary" %>
+</div>
+
+<div class="picks-index">
+  <% if @picks.any? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>選手名</th>
+          <th>年度</th>
+          <th>指名球団</th>
+          <th>指名順位</th>
+          <th>育成指名</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @picks.each do |pick| %>
+          <tr>
+            <td><%= pick.player.name %></td>
+            <td><%= pick.year %>年</td>
+            <td><%= pick.team.short_name %></td>
+            <td><%= "#{pick.draft_round}位" %></td>
+            <td><%= pick.training_player? ? "○" : "" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>指名結果が登録されていません。</p>
+  <% end %>
+</div>

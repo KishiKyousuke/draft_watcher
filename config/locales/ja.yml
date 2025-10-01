@@ -51,6 +51,7 @@ ja:
         draft_round: 指名順位
         training_player: 育成指名
         team: 指名球団
+        player: 選手
 
   players:
     index:
@@ -64,6 +65,7 @@ ja:
       training: "(育成)"
     show:
       title: 選手詳細
+      add_pick: 指名結果を追加
       edit: 編集
       delete: 削除
       back_to_index: 一覧に戻る
@@ -97,10 +99,21 @@ ja:
       height_unit: "(cm)"
       weight_unit: "(kg)"
 
+  picks:
+    new:
+      title: 指名結果登録
+      title_for_player: "%{player_name}の指名結果登録"
+      register: 登録
+      cancel: キャンセル
+    form:
+      select_player: 選手を選択してください
+      select_team: 指名球団を選択してください
+
   notices:
     player_created: 選手を登録しました。
     player_updated: 選手情報を更新しました。
     player_deleted: 選手を削除しました。
+    pick_created: 指名結果を登録しました。
 
   units:
     cm: cm

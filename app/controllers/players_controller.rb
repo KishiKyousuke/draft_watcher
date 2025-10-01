@@ -1,6 +1,6 @@
 class PlayersController < ApplicationController
   def index
-    @players = Player.includes(:positions, :draft_results).all
+    @players = Player.includes(:positions, :picks).all
   end
 
   def show

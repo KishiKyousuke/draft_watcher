@@ -1,5 +1,5 @@
 class Team < ApplicationRecord
-  has_many :draft_results, dependent: :destroy
+  has_many :picks, dependent: :destroy
 
   validates :name, presence: true
   validates :short_name, presence: true

@@ -45,9 +45,9 @@
   </div>
 
   <div class="draft-results">
-    <h3><%= t('players.show.draft_results') %></h3>
-    <% if @player.draft_results.any? %>
-      <% @player.draft_results.each do |result| %>
+    <h3><%= t('players.show.pick_results') %></h3>
+    <% if @player.picks.any? %>
+      <% @player.picks.each do |result| %>
         <div class="draft-result">
           <strong><%= result.year %><%= t('units.year') %></strong>
           <% if result.team %>
@@ -60,7 +60,7 @@
         </div>
       <% end %>
     <% else %>
-      <p><%= t('players.show.no_draft_results') %></p>
+      <p><%= t('players.show.no_pick_results') %></p>
     <% end %>
   </div>
 </div>

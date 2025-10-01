@@ -1,4 +1,4 @@
-class DraftResult < ApplicationRecord
+class Pick < ApplicationRecord
   belongs_to :player
   belongs_to :team, optional: true
 

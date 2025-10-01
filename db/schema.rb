@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_01_132850) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_01_135234) do
   create_table "picks", force: :cascade do |t|
     t.integer "player_id", null: false
-    t.integer "team_id"
+    t.integer "team_id", null: false
     t.integer "year", null: false
-    t.integer "draft_round"
+    t.integer "draft_round", null: false
     t.boolean "training_player", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

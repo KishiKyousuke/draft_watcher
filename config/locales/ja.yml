@@ -74,6 +74,9 @@ ja:
       pick_results: 指名結果
       no_pick_results: 指名結果が未登録です。
       confirm_delete: "%{name}を削除しますか？"
+      edit_pick: 編集
+      delete_pick: 削除
+      confirm_delete_pick: この指名結果を削除しますか？
     new:
       title: ドラフト候補選手登録
       register: 登録

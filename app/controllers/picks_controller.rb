@@ -14,7 +14,7 @@ class PicksController < ApplicationController
     @pick = Pick.new(pick_params)
 
     if @pick.save
-      redirect_to picks_path, notice: t('notices.pick_created')
+      redirect_to player_path(@pick.player), notice: t('notices.pick_created')
     else
       @selected_player = Player.find(@pick.player_id)
       @teams = Team.all

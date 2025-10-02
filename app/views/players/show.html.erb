@@ -52,11 +52,16 @@
           <strong><%= result.year %><%= t('units.year') %></strong>
           <% if result.team %>
             <%= result.team.short_name %>
-            <%= "#{result.draft_round}位" if result.draft_round %>
-            <%= t('players.index.training') if result.training_player %>
+            <% if result.training_player %>
+              育成<%= result.draft_round %>位
+            <% else %>
+              <%= "#{result.draft_round}位" if result.draft_round %>
+            <% end %>
           <% else %>
             <%= t('players.index.not_drafted') %>
           <% end %>
+          <%= link_to t('players.show.edit_pick'), edit_pick_path(result), class: "btn btn-xs btn-secondary" %>
+          <%= link_to t('players.show.delete_pick'), pick_path(result), data: { turbo_method: :delete, turbo_confirm: t('players.show.confirm_delete_pick') }, class: "btn btn-xs btn-danger" %>
         </div>
       <% end %>
     <% else %>

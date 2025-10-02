@@ -41,8 +41,28 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   <%= player.affiliation %>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  <%= player.positions.map(&:short_name).join(", ") %>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                  <div class="flex flex-wrap gap-1">
+                    <% player.positions.each do |position| %>
+                      <%
+                        color_class = case position.short_name
+                        when '投'
+                          'bg-pink-100 text-pink-800'
+                        when '捕'
+                          'bg-blue-100 text-blue-800'
+                        when '一', '二', '三', '遊'
+                          'bg-yellow-100 text-yellow-800'
+                        when '右', '中', '左'
+                          'bg-green-100 text-green-800'
+                        else
+                          'bg-gray-100 text-gray-800'
+                        end
+                      %>
+                      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium <%= color_class %>">
+                        <%= position.short_name %>
+                      </span>
+                    <% end %>
+                  </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   <%= t("activerecord.attributes.player.pitching_battings.#{player.pitching_batting}") if player.pitching_batting %>

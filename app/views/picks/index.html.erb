@@ -1,51 +1,67 @@
-<h1>指名結果一覧</h1>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-6">指名結果一覧</h1>
 
-<div class="actions">
-  <%= link_to t('picks.index.players'), players_path, class: "btn btn-secondary" %>
-</div>
+    <div>
+      <%= link_to t('picks.index.players'), players_path, class: "inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
+    </div>
+  </div>
 
-<div class="picks-index">
+  <!-- Picks List -->
   <% if @picks.any? %>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>選手名</th>
-          <th>年度</th>
-          <th>指名球団</th>
-          <th>指名順位</th>
-          <th>ステータス</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @picks.each do |pick| %>
-          <tr>
-            <td><%= link_to pick.player.name, player_path(pick.player) %></td>
-            <td><%= pick.year %>年</td>
-            <td><%= pick.team.short_name %></td>
-            <td>
-              <% if pick.training_player? %>
-                育成<%= pick.draft_round %>位
-              <% else %>
-                <%= "#{pick.draft_round}位" %>
-              <% end %>
-            </td>
-            <td>
-              <% if pick.confirmed %>
-                <span class="badge badge-success">確定</span>
-              <% else %>
-                <span class="badge badge-warning">未確定</span>
-              <% end %>
-            </td>
-            <td>
-              <%= link_to t('picks.index.edit'), edit_pick_path(pick), class: "btn btn-sm btn-secondary" %>
-              <%= link_to t('picks.index.delete'), pick_path(pick), data: { turbo_method: :delete, turbo_confirm: t('picks.index.confirm_delete', player_name: pick.player.name) }, class: "btn btn-sm btn-danger" %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">選手名</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">年度</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">指名球団</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">指名順位</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ステータス</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <% @picks.each do |pick| %>
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm font-medium text-blue-600 hover:text-blue-800">
+                    <%= link_to pick.player.name, player_path(pick.player) %>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= pick.year %>年</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= pick.team.short_name %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <% if pick.training_player? %>
+                    育成<%= pick.draft_round %>位
+                  <% else %>
+                    <%= "#{pick.draft_round}位" %>
+                  <% end %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <% if pick.confirmed %>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">確定</span>
+                  <% else %>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">未確定</span>
+                  <% end %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <div class="flex gap-2">
+                    <%= link_to t('picks.index.edit'), edit_pick_path(pick), class: "inline-flex items-center px-3 py-1 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded transition duration-150 ease-in-out" %>
+                    <%= link_to t('picks.index.delete'), pick_path(pick), data: { turbo_method: :delete, turbo_confirm: t('picks.index.confirm_delete', player_name: pick.player.name) }, class: "inline-flex items-center px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded transition duration-150 ease-in-out" %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
   <% else %>
-    <p>指名結果が登録されていません。</p>
+    <div class="bg-white shadow-md rounded-lg p-8 text-center">
+      <p class="text-gray-500">指名結果が登録されていません。</p>
+    </div>
   <% end %>
 </div>

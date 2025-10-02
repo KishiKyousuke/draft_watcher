@@ -1,0 +1,59 @@
+<h1>
+  <%= t('picks.edit.title', player_name: @selected_player.name) %>
+</h1>
+
+<div class="pick-form">
+  <%= form_with model: @pick, local: true do |form| %>
+    <% if @pick.errors.any? %>
+      <div class="error-messages">
+        <h4><%= pluralize(@pick.errors.count, "error") %> prohibited this pick from being saved:</h4>
+        <ul>
+          <% @pick.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= form.label :player_id, Pick.human_attribute_name(:player) %>
+      <div class="selected-player">
+        <strong><%= @selected_player.name %></strong>
+        <small>(<%= @selected_player.name_kana %>)</small>
+        <%= form.hidden_field :player_id %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :year, Pick.human_attribute_name(:year) %>
+      <%= form.number_field :year, required: true %>
+    </div>
+
+    <div class="field">
+      <%= form.label :team_id, Pick.human_attribute_name(:team) %>
+      <%= form.collection_select :team_id, @teams, :id, :short_name,
+          { prompt: t('picks.form.select_team') },
+          { required: true } %>
+    </div>
+
+    <div class="field">
+      <%= form.label :draft_round, Pick.human_attribute_name(:draft_round) %>
+      <%= form.number_field :draft_round, min: 1, required: true %>
+    </div>
+
+    <div class="field">
+      <%= form.check_box :training_player %>
+      <%= form.label :training_player, Pick.human_attribute_name(:training_player) %>
+    </div>
+
+    <div class="field">
+      <%= form.check_box :confirmed %>
+      <%= form.label :confirmed, Pick.human_attribute_name(:confirmed) %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit t('picks.edit.update'), class: "btn btn-primary" %>
+      <%= link_to t('picks.edit.cancel'), picks_path, class: "btn btn-secondary" %>
+    </div>
+  <% end %>
+</div>

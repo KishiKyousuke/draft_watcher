@@ -2,6 +2,7 @@
 
 <div class="actions">
   <%= link_to t('players.index.new_player'), new_player_path, class: "btn btn-primary" %>
+  <%= link_to t('players.index.pick_results'), picks_path, class: "btn btn-secondary" %>
 </div>
 
 <div class="players-index">
@@ -46,8 +47,11 @@
                     <%= result.year %><%= t('units.year') %>
                     <% if result.team %>
                       <%= result.team.short_name %>
-                      <%= "#{result.draft_round}位" if result.draft_round %>
-                      <%= t('players.index.training') if result.training_player %>
+                      <% if result.training_player %>
+                        育成<%= result.draft_round %>位
+                      <% else %>
+                        <%= "#{result.draft_round}位" if result.draft_round %>
+                      <% end %>
                     <% else %>
                       <%= t('players.index.not_drafted') %>
                     <% end %>

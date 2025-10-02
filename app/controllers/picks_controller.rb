@@ -22,6 +22,23 @@ class PicksController < ApplicationController
     end
   end
 
+  def edit
+    @pick = Pick.find(params[:id])
+    @selected_player = @pick.player
+    @teams = Team.all
+  end
+
+  def update
+    @pick = Pick.find(params[:id])
+    if @pick.update(pick_params)
+      redirect_to picks_path, notice: t('notices.pick_updated')
+    else
+      @selected_player = @pick.player
+      @teams = Team.all
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def pick_params

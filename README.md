@@ -71,7 +71,7 @@ erDiagram
         datetime updated_at
     }
 
-    DRAFT_RESULTS {
+    PICKS {
         int id PK
         int player_id FK
         int team_id FK "nullable"
@@ -84,15 +84,15 @@ erDiagram
 
     PLAYERS ||--o{ PLAYER_POSITIONS : "選手は複数ポジションを守れる"
     POSITIONS ||--o{ PLAYER_POSITIONS : "ポジションは複数選手が守れる"
-    PLAYERS ||--o{ DRAFT_RESULTS : "選手は複数年ドラフト対象になり得る"
-    TEAMS ||--o{ DRAFT_RESULTS : "球団は複数選手を指名する"
+    PLAYERS ||--o{ PICKS : "選手は複数年ドラフト対象になり得る"
+    TEAMS ||--o{ PICKS : "球団は複数選手を指名する"
 ```
 
 ### モデル関係
 
 - **Players ↔ Positions (多対多)**: `player_positions`中間テーブルで関連付け
-- **Players → DraftResults (1対多)**: 1人の選手が複数年ドラフト対象になる可能性
-- **Teams → DraftResults (1対多)**: 1つの球団が複数の選手を指名
+- **Players → Picks (1対多)**: 1人の選手が複数年ドラフト対象になる可能性
+- **Teams → Picks (1対多)**: 1つの球団が複数の選手を指名
 
 ### Enum定義
 

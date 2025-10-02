@@ -1,6 +1,6 @@
-require "test_helper"
+require 'test_helper'
 
 class PlayersControllerTest < ActionDispatch::IntegrationTest
-  test "should get index" do
+  test 'should get index' do
   end
 end

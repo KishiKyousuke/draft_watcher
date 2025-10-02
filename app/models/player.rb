@@ -1,7 +1,7 @@
 class Player < ApplicationRecord
   has_many :player_positions, dependent: :destroy
   has_many :positions, through: :player_positions
-  has_many :draft_results, dependent: :destroy
+  has_many :picks, dependent: :destroy
 
   validates :name, presence: true
   validates :name_kana, presence: true

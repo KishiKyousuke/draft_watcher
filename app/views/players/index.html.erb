@@ -2,6 +2,7 @@
 
 <div class="actions">
   <%= link_to t('players.index.new_player'), new_player_path, class: "btn btn-primary" %>
+  <%= link_to t('players.index.pick_results'), picks_path, class: "btn btn-secondary" %>
 </div>
 
 <div class="players-index">
@@ -16,7 +17,7 @@
           <th><%= Player.human_attribute_name(:pitching_batting) %></th>
           <th><%= t('players.index.height_weight') %></th>
           <th><%= Player.human_attribute_name(:age) %></th>
-          <th><%= t('players.index.draft_result') %></th>
+          <th><%= t('players.index.pick_result') %></th>
         </tr>
       </thead>
       <tbody>
@@ -40,14 +41,17 @@
             </td>
             <td><%= "#{player.age}#{t('units.age')}" if player.age %></td>
             <td>
-              <% if player.draft_results.any? %>
-                <% player.draft_results.each do |result| %>
+              <% if player.picks.any? %>
+                <% player.picks.each do |result| %>
                   <div>
                     <%= result.year %><%= t('units.year') %>
                     <% if result.team %>
                       <%= result.team.short_name %>
-                      <%= "#{result.draft_round}位" if result.draft_round %>
-                      <%= t('players.index.training') if result.training_player %>
+                      <% if result.training_player %>
+                        育成<%= result.draft_round %>位
+                      <% else %>
+                        <%= "#{result.draft_round}位" if result.draft_round %>
+                      <% end %>
                     <% else %>
                       <%= t('players.index.not_drafted') %>
                     <% end %>

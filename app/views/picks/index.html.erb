@@ -1,0 +1,51 @@
+<h1>指名結果一覧</h1>
+
+<div class="actions">
+  <%= link_to t('picks.index.players'), players_path, class: "btn btn-secondary" %>
+</div>
+
+<div class="picks-index">
+  <% if @picks.any? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>選手名</th>
+          <th>年度</th>
+          <th>指名球団</th>
+          <th>指名順位</th>
+          <th>ステータス</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @picks.each do |pick| %>
+          <tr>
+            <td><%= link_to pick.player.name, player_path(pick.player) %></td>
+            <td><%= pick.year %>年</td>
+            <td><%= pick.team.short_name %></td>
+            <td>
+              <% if pick.training_player? %>
+                育成<%= pick.draft_round %>位
+              <% else %>
+                <%= "#{pick.draft_round}位" %>
+              <% end %>
+            </td>
+            <td>
+              <% if pick.confirmed %>
+                <span class="badge badge-success">確定</span>
+              <% else %>
+                <span class="badge badge-warning">未確定</span>
+              <% end %>
+            </td>
+            <td>
+              <%= link_to t('picks.index.edit'), edit_pick_path(pick), class: "btn btn-sm btn-secondary" %>
+              <%= link_to t('picks.index.delete'), pick_path(pick), data: { turbo_method: :delete, turbo_confirm: t('picks.index.confirm_delete', player_name: pick.player.name) }, class: "btn btn-sm btn-danger" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>指名結果が登録されていません。</p>
+  <% end %>
+</div>

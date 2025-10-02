@@ -44,29 +44,41 @@
     <% end %>
   </div>
 
+  <div class="player-actions">
+    <%= link_to t('players.show.edit'), edit_player_path(@player), class: "btn btn-primary" %>
+    <%= link_to t('players.show.delete'), player_path(@player), data: { turbo_method: :delete, turbo_confirm: t('players.show.confirm_delete', name: @player.name) }, class: "btn btn-danger" %>
+  </div>
+
   <div class="draft-results">
-    <h3><%= t('players.show.draft_results') %></h3>
-    <% if @player.draft_results.any? %>
-      <% @player.draft_results.each do |result| %>
+    <h3><%= t('players.show.pick_results') %></h3>
+    <% if @player.picks.any? %>
+      <% @player.picks.each do |result| %>
         <div class="draft-result">
           <strong><%= result.year %><%= t('units.year') %></strong>
           <% if result.team %>
             <%= result.team.short_name %>
-            <%= "#{result.draft_round}位" if result.draft_round %>
-            <%= t('players.index.training') if result.training_player %>
+            <% if result.training_player %>
+              育成<%= result.draft_round %>位
+            <% else %>
+              <%= "#{result.draft_round}位" if result.draft_round %>
+            <% end %>
           <% else %>
             <%= t('players.index.not_drafted') %>
           <% end %>
+          <%= link_to t('players.show.edit_pick'), edit_pick_path(result), class: "btn btn-xs btn-secondary" %>
+          <%= link_to t('players.show.delete_pick'), pick_path(result), data: { turbo_method: :delete, turbo_confirm: t('players.show.confirm_delete_pick') }, class: "btn btn-xs btn-danger" %>
         </div>
       <% end %>
     <% else %>
-      <p><%= t('players.show.no_draft_results') %></p>
+      <p><%= t('players.show.no_pick_results') %></p>
     <% end %>
   </div>
 </div>
 
 <div class="actions">
-  <%= link_to t('players.show.edit'), edit_player_path(@player), class: "btn btn-primary" %>
-  <%= link_to t('players.show.delete'), player_path(@player), data: { turbo_method: :delete, turbo_confirm: t('players.show.confirm_delete', name: @player.name) }, class: "btn btn-danger" %>
+  <%= link_to t('players.show.add_pick'), new_pick_path(player_id: @player.id), class: "btn btn-success" %>
+</div>
+
+<div class="actions">
   <%= link_to t('players.show.back_to_index'), players_path, class: "btn btn-secondary" %>
 </div>

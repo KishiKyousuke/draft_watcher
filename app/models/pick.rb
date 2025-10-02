@@ -8,7 +8,7 @@ class Pick < ApplicationRecord
   validates :draft_round, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :player_id, uniqueness: {
     scope: :year,
-    message: "は同じ年度に複数回指名できません",
+    message: 'は同じ年度に複数回指名できません',
     if: -> { draft_round != 1 || training_player }
   }
 

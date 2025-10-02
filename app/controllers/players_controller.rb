@@ -16,7 +16,7 @@ class PlayersController < ApplicationController
     @player = Player.new(player_params)
 
     if @player.save
-      redirect_to players_path, notice: "選手を登録しました。"
+      redirect_to players_path, notice: '選手を登録しました。'
     else
       @positions = Position.all
       render :new, status: :unprocessable_entity
@@ -31,7 +31,7 @@ class PlayersController < ApplicationController
   def update
     @player = Player.find(params[:id])
     if @player.update(player_params)
-      redirect_to player_path(@player), notice: "選手情報を更新しました。"
+      redirect_to player_path(@player), notice: '選手情報を更新しました。'
     else
       @positions = Position.all
       render :edit, status: :unprocessable_entity
@@ -41,7 +41,7 @@ class PlayersController < ApplicationController
   def destroy
     @player = Player.find(params[:id])
     @player.destroy
-    redirect_to players_path, notice: "選手を削除しました。"
+    redirect_to players_path, notice: '選手を削除しました。'
   end
 
   private

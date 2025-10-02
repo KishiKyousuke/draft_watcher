@@ -20,7 +20,7 @@
       <tbody>
         <% @picks.each do |pick| %>
           <tr>
-            <td><%= pick.player.name %></td>
+            <td><%= link_to pick.player.name, player_path(pick.player) %></td>
             <td><%= pick.year %>年</td>
             <td><%= pick.team.short_name %></td>
             <td>

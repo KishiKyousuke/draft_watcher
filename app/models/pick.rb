@@ -11,4 +11,14 @@ class Pick < ApplicationRecord
     message: "は同じ年度に複数回指名できません",
     if: -> { draft_round != 1 || training_player }
   }
+
+  before_validation :set_confirmed_default, on: :create
+
+  private
+
+  def set_confirmed_default
+    if draft_round == 1 && !training_player
+      self.confirmed = false if confirmed.nil?
+    end
+  end
 end

@@ -46,6 +46,11 @@
       <%= form.label :training_player, Pick.human_attribute_name(:training_player) %>
     </div>
 
+    <div class="field">
+      <%= form.check_box :confirmed %>
+      <%= form.label :confirmed, Pick.human_attribute_name(:confirmed) %>
+    </div>
+
     <div class="actions">
       <%= form.submit t('picks.new.register'), class: "btn btn-primary" %>
       <%= link_to t('picks.new.cancel'), picks_path, class: "btn btn-secondary" %>

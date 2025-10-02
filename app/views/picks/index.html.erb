@@ -14,6 +14,7 @@
           <th>指名球団</th>
           <th>指名順位</th>
           <th>育成指名</th>
+          <th>ステータス</th>
         </tr>
       </thead>
       <tbody>
@@ -24,6 +25,13 @@
             <td><%= pick.team.short_name %></td>
             <td><%= "#{pick.draft_round}位" %></td>
             <td><%= pick.training_player? ? "○" : "" %></td>
+            <td>
+              <% if pick.confirmed %>
+                <span class="badge badge-success">確定</span>
+              <% else %>
+                <span class="badge badge-warning">未確定</span>
+              <% end %>
+            </td>
           </tr>
         <% end %>
       </tbody>

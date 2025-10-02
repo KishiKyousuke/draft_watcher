@@ -52,6 +52,7 @@ ja:
         training_player: 育成指名
         team: 指名球団
         player: 選手
+        confirmed: 確定
 
   players:
     index:

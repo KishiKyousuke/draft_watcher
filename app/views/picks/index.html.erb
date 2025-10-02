@@ -1,7 +1,6 @@
 <h1>指名結果一覧</h1>
 
 <div class="actions">
-  <%= link_to "新規指名結果登録", new_pick_path, class: "btn btn-primary" %>
   <%= link_to t('picks.index.players'), players_path, class: "btn btn-secondary" %>
 </div>
 
@@ -40,6 +39,7 @@
             </td>
             <td>
               <%= link_to t('picks.index.edit'), edit_pick_path(pick), class: "btn btn-sm btn-secondary" %>
+              <%= link_to t('picks.index.delete'), pick_path(pick), data: { turbo_method: :delete, turbo_confirm: t('picks.index.confirm_delete', player_name: pick.player.name) }, class: "btn btn-sm btn-danger" %>
             </td>
           </tr>
         <% end %>

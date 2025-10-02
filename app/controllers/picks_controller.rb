@@ -39,6 +39,12 @@ class PicksController < ApplicationController
     end
   end
 
+  def destroy
+    @pick = Pick.find(params[:id])
+    @pick.destroy
+    redirect_to picks_path, notice: t('notices.pick_deleted')
+  end
+
   private
 
   def pick_params

@@ -104,7 +104,9 @@ ja:
   picks:
     index:
       edit: 編集
+      delete: 削除
       players: 選手一覧
+      confirm_delete: "%{player_name}の指名結果を削除しますか？"
     new:
       title: 指名結果登録
       title_for_player: "%{player_name}の指名結果登録"
@@ -124,6 +126,7 @@ ja:
     player_deleted: 選手を削除しました。
     pick_created: 指名結果を登録しました。
     pick_updated: 指名結果を更新しました。
+    pick_deleted: 指名結果を削除しました。
 
   units:
     cm: cm

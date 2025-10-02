@@ -44,6 +44,11 @@
     <% end %>
   </div>
 
+  <div class="player-actions">
+    <%= link_to t('players.show.edit'), edit_player_path(@player), class: "btn btn-primary" %>
+    <%= link_to t('players.show.delete'), player_path(@player), data: { turbo_method: :delete, turbo_confirm: t('players.show.confirm_delete', name: @player.name) }, class: "btn btn-danger" %>
+  </div>
+
   <div class="draft-results">
     <h3><%= t('players.show.pick_results') %></h3>
     <% if @player.picks.any? %>
@@ -72,7 +77,8 @@
 
 <div class="actions">
   <%= link_to t('players.show.add_pick'), new_pick_path(player_id: @player.id), class: "btn btn-success" %>
-  <%= link_to t('players.show.edit'), edit_player_path(@player), class: "btn btn-primary" %>
-  <%= link_to t('players.show.delete'), player_path(@player), data: { turbo_method: :delete, turbo_confirm: t('players.show.confirm_delete', name: @player.name) }, class: "btn btn-danger" %>
+</div>
+
+<div class="actions">
   <%= link_to t('players.show.back_to_index'), players_path, class: "btn btn-secondary" %>
 </div>

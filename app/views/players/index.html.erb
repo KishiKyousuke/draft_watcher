@@ -1,71 +1,113 @@
-<h1><%= t('players.index.title') %></h1>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-6"><%= t('players.index.title') %></h1>
 
-<div class="actions">
-  <%= link_to t('players.index.new_player'), new_player_path, class: "btn btn-primary" %>
-  <%= link_to t('players.index.pick_results'), picks_path, class: "btn btn-secondary" %>
-</div>
+    <div class="flex gap-3">
+      <%= link_to t('players.index.new_player'), new_player_path, class: "inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
+      <%= link_to t('players.index.pick_results'), picks_path, class: "inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
+    </div>
+  </div>
 
-<div class="players-index">
+  <!-- Players List -->
   <% if @players.any? %>
-    <table class="table">
-      <thead>
-        <tr>
-          <th><%= Player.human_attribute_name(:name) %></th>
-          <th><%= Player.human_attribute_name(:category) %></th>
-          <th><%= Player.human_attribute_name(:affiliation) %></th>
-          <th><%= Player.human_attribute_name(:positions) %></th>
-          <th><%= Player.human_attribute_name(:pitching_batting) %></th>
-          <th><%= t('players.index.height_weight') %></th>
-          <th><%= Player.human_attribute_name(:age) %></th>
-          <th><%= t('players.index.pick_result') %></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @players.each do |player| %>
-          <tr>
-            <td>
-              <strong><%= link_to player.name, player_path(player) %></strong><br>
-              <small><%= player.name_kana %></small>
-            </td>
-            <td><%= t("activerecord.attributes.player.categories.#{player.category}") if player.category %></td>
-            <td><%= player.affiliation %></td>
-            <td>
-              <%= player.positions.map(&:short_name).join(", ") %>
-            </td>
-            <td><%= t("activerecord.attributes.player.pitching_battings.#{player.pitching_batting}") if player.pitching_batting %></td>
-            <td>
-              <% if player.height || player.weight %>
-                <%= "#{player.height}#{t('units.cm')}" if player.height %>
-                <%= "#{player.weight}#{t('units.kg')}" if player.weight %>
-              <% end %>
-            </td>
-            <td><%= "#{player.age}#{t('units.age')}" if player.age %></td>
-            <td>
-              <% if player.picks.any? %>
-                <% player.picks.each do |result| %>
-                  <div>
-                    <%= result.year %><%= t('units.year') %>
-                    <% if result.team %>
-                      <%= result.team.short_name %>
-                      <% if result.training_player %>
-                        育成<%= result.draft_round %>位
-                      <% else %>
-                        <%= "#{result.draft_round}位" if result.draft_round %>
-                      <% end %>
-                    <% else %>
-                      <%= t('players.index.not_drafted') %>
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= Player.human_attribute_name(:name) %></th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= Player.human_attribute_name(:category) %></th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= Player.human_attribute_name(:affiliation) %></th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= Player.human_attribute_name(:positions) %></th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= Player.human_attribute_name(:pitching_batting) %></th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t('players.index.height_weight') %></th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= Player.human_attribute_name(:age) %></th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t('players.index.pick_result') %></th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <% @players.each do |player| %>
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm font-medium text-blue-600 hover:text-blue-800">
+                    <%= link_to player.name, player_path(player) %>
+                  </div>
+                  <div class="text-sm text-gray-500"><%= player.name_kana %></div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <%= t("activerecord.attributes.player.categories.#{player.category}") if player.category %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <%= player.affiliation %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                  <div class="flex flex-wrap gap-1">
+                    <% player.positions.each do |position| %>
+                      <%
+                        color_class = case position.short_name
+                        when '投'
+                          'bg-pink-100 text-pink-800'
+                        when '捕'
+                          'bg-blue-100 text-blue-800'
+                        when '一', '二', '三', '遊'
+                          'bg-yellow-100 text-yellow-800'
+                        when '右', '中', '左'
+                          'bg-green-100 text-green-800'
+                        else
+                          'bg-gray-100 text-gray-800'
+                        end
+                      %>
+                      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium <%= color_class %>">
+                        <%= position.short_name %>
+                      </span>
                     <% end %>
                   </div>
-                <% end %>
-              <% else %>
-                <%= t('players.index.not_registered') %>
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <%= t("activerecord.attributes.player.pitching_battings.#{player.pitching_batting}") if player.pitching_batting %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <% if player.height || player.weight %>
+                    <%= "#{player.height}#{t('units.cm')}" if player.height %>
+                    <%= " / #{player.weight}#{t('units.kg')}" if player.weight %>
+                  <% end %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <%= "#{player.age}#{t('units.age')}" if player.age %>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-900">
+                  <% if player.picks.any? %>
+                    <% player.picks.each do |result| %>
+                      <div class="mb-1">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          <%= result.year %><%= t('units.year') %>
+                          <% if result.team %>
+                            <%= result.team.short_name %>
+                            <% if result.training_player %>
+                              育成<%= result.draft_round %>位
+                            <% else %>
+                              <%= "#{result.draft_round}位" if result.draft_round %>
+                            <% end %>
+                          <% else %>
+                            <%= t('players.index.not_drafted') %>
+                          <% end %>
+                        </span>
+                      </div>
+                    <% end %>
+                  <% else %>
+                    <span class="text-gray-400"><%= t('players.index.not_registered') %></span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
   <% else %>
-    <p><%= t('players.index.no_players') %></p>
+    <div class="bg-white shadow-md rounded-lg p-8 text-center">
+      <p class="text-gray-500"><%= t('players.index.no_players') %></p>
+    </div>
   <% end %>
 </div>

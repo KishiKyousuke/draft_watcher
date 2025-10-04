@@ -1,84 +1,107 @@
-<h1><%= t('players.show.title') %></h1>
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= @player.name %></h1>
+    <p class="text-lg text-gray-500"><%= @player.name_kana %></p>
+  </div>
 
-<div class="player-details">
-  <div class="player-info">
-    <h2><%= @player.name %></h2>
-    <p class="name-kana"><%= @player.name_kana %></p>
-
-    <table class="details-table">
-      <tr>
-        <th><%= Player.human_attribute_name(:category) %></th>
-        <td><%= t("activerecord.attributes.player.categories.#{@player.category}") if @player.category %></td>
-      </tr>
-      <tr>
-        <th><%= Player.human_attribute_name(:affiliation) %></th>
-        <td><%= @player.affiliation %></td>
-      </tr>
-      <tr>
-        <th><%= Player.human_attribute_name(:positions) %></th>
-        <td><%= @player.positions.map(&:name).join(", ") %></td>
-      </tr>
-      <tr>
-        <th><%= Player.human_attribute_name(:pitching_batting) %></th>
-        <td><%= t("activerecord.attributes.player.pitching_battings.#{@player.pitching_batting}") if @player.pitching_batting %></td>
-      </tr>
-      <tr>
-        <th><%= Player.human_attribute_name(:height) %></th>
-        <td><%= "#{@player.height}#{t('units.cm')}" if @player.height %></td>
-      </tr>
-      <tr>
-        <th><%= Player.human_attribute_name(:weight) %></th>
-        <td><%= "#{@player.weight}#{t('units.kg')}" if @player.weight %></td>
-      </tr>
-      <tr>
-        <th><%= Player.human_attribute_name(:age) %></th>
-        <td><%= "#{@player.age}#{t('units.age')}" if @player.age %></td>
-      </tr>
-    </table>
+  <!-- Player Info Card -->
+  <div class="bg-white shadow-md rounded-lg overflow-hidden mb-6">
+    <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+      <h2 class="text-xl font-semibold text-gray-900">基本情報</h2>
+    </div>
+    <div class="px-6 py-4">
+      <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div>
+          <dt class="text-sm font-medium text-gray-500"><%= Player.human_attribute_name(:category) %></dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= t("activerecord.attributes.player.categories.#{@player.category}") if @player.category %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500"><%= Player.human_attribute_name(:affiliation) %></dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @player.affiliation %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500"><%= Player.human_attribute_name(:positions) %></dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @player.positions.map(&:name).join(", ") %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500"><%= Player.human_attribute_name(:pitching_batting) %></dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= t("activerecord.attributes.player.pitching_battings.#{@player.pitching_batting}") if @player.pitching_batting %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500"><%= Player.human_attribute_name(:height) %></dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= "#{@player.height}#{t('units.cm')}" if @player.height %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500"><%= Player.human_attribute_name(:weight) %></dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= "#{@player.weight}#{t('units.kg')}" if @player.weight %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500"><%= Player.human_attribute_name(:age) %></dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= "#{@player.age}#{t('units.age')}" if @player.age %></dd>
+        </div>
+      </dl>
+    </div>
 
     <% if @player.description.present? %>
-      <div class="description">
-        <h3><%= Player.human_attribute_name(:description) %></h3>
-        <p><%= simple_format(@player.description) %></p>
+      <div class="px-6 py-4 border-t border-gray-200">
+        <h3 class="text-sm font-medium text-gray-500 mb-2"><%= Player.human_attribute_name(:description) %></h3>
+        <div class="text-sm text-gray-900 whitespace-pre-line"><%= @player.description %></div>
       </div>
     <% end %>
   </div>
 
-  <div class="player-actions">
-    <%= link_to t('players.show.edit'), edit_player_path(@player), class: "btn btn-primary" %>
-    <%= link_to t('players.show.delete'), player_path(@player), data: { turbo_method: :delete, turbo_confirm: t('players.show.confirm_delete', name: @player.name) }, class: "btn btn-danger" %>
+  <!-- Player Actions -->
+  <div class="flex gap-3 mb-6">
+    <%= link_to t('players.show.edit'), edit_player_path(@player), class: "inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
+    <%= link_to t('players.show.delete'), player_path(@player), data: { turbo_method: :delete, turbo_confirm: t('players.show.confirm_delete', name: @player.name) }, class: "inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
   </div>
 
-  <div class="draft-results">
-    <h3><%= t('players.show.pick_results') %></h3>
-    <% if @player.picks.any? %>
-      <% @player.picks.each do |result| %>
-        <div class="draft-result">
-          <strong><%= result.year %><%= t('units.year') %></strong>
-          <% if result.team %>
-            <%= result.team.short_name %>
-            <% if result.training_player %>
-              育成<%= result.draft_round %>位
-            <% else %>
-              <%= "#{result.draft_round}位" if result.draft_round %>
-            <% end %>
-          <% else %>
-            <%= t('players.index.not_drafted') %>
+  <!-- Draft Results Card -->
+  <div class="bg-white shadow-md rounded-lg overflow-hidden mb-6">
+    <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+      <h2 class="text-xl font-semibold text-gray-900"><%= t('players.show.pick_results') %></h2>
+    </div>
+    <div class="px-6 py-4">
+      <% if @player.picks.any? %>
+        <div class="space-y-3">
+          <% @player.picks.each do |result| %>
+            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                  <%= result.year %><%= t('units.year') %>
+                  <% if result.team %>
+                    <%= result.team.short_name %>
+                    <% if result.training_player %>
+                      育成<%= result.draft_round %>位
+                    <% else %>
+                      <%= "#{result.draft_round}位" if result.draft_round %>
+                    <% end %>
+                  <% else %>
+                    <%= t('players.index.not_drafted') %>
+                  <% end %>
+                </span>
+              </div>
+              <div class="flex gap-2">
+                <%= link_to t('players.show.edit_pick'), edit_pick_path(result), class: "inline-flex items-center px-3 py-1 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded transition duration-150 ease-in-out" %>
+                <%= link_to t('players.show.delete_pick'), pick_path(result), data: { turbo_method: :delete, turbo_confirm: t('players.show.confirm_delete_pick') }, class: "inline-flex items-center px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded transition duration-150 ease-in-out" %>
+              </div>
+            </div>
           <% end %>
-          <%= link_to t('players.show.edit_pick'), edit_pick_path(result), class: "btn btn-xs btn-secondary" %>
-          <%= link_to t('players.show.delete_pick'), pick_path(result), data: { turbo_method: :delete, turbo_confirm: t('players.show.confirm_delete_pick') }, class: "btn btn-xs btn-danger" %>
         </div>
+      <% else %>
+        <p class="text-gray-500 text-center py-4"><%= t('players.show.no_pick_results') %></p>
       <% end %>
-    <% else %>
-      <p><%= t('players.show.no_pick_results') %></p>
-    <% end %>
+    </div>
   </div>
-</div>
 
-<div class="actions">
-  <%= link_to t('players.show.add_pick'), new_pick_path(player_id: @player.id), class: "btn btn-success" %>
-</div>
-
-<div class="actions">
-  <%= link_to t('players.show.back_to_index'), players_path, class: "btn btn-secondary" %>
+  <!-- Bottom Actions -->
+  <div class="space-y-3">
+    <div>
+      <%= link_to t('players.show.add_pick'), new_pick_path(player_id: @player.id), class: "inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
+    </div>
+    <div>
+      <%= link_to t('players.show.back_to_index'), players_path, class: "inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
+    </div>
+  </div>
 </div>

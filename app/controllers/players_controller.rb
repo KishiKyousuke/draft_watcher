@@ -17,7 +17,7 @@ class PlayersController < ApplicationController
       @players = @players.joins(:positions).where(positions: { id: params[:position_id] })
     end
 
-    @players = @players.distinct
+    @players = @players.distinct.page(params[:page]).per(50)
     @positions = Position.all
   end
 

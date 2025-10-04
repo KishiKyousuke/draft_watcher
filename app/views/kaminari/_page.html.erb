@@ -1,0 +1,7 @@
+<% if page.current? %>
+  <span class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg">
+    <%= page %>
+  </span>
+<% else %>
+  <%= link_to page, url, rel: page.rel, class: "px-4 py-2 bg-white text-gray-700 font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition" %>
+<% end %>

@@ -1,0 +1,37 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold mb-8">選手データエクスポート</h1>
+
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+      <h2 class="text-xl font-semibold mb-4">エクスポート内容</h2>
+      <p class="mb-4 text-gray-700">全選手データを以下の形式でCSVファイルとしてダウンロードします：</p>
+      <div class="bg-gray-100 p-4 rounded mb-4 overflow-x-auto">
+        <code class="text-sm">
+          ID,カテゴリ,名前,ふりがな,ポジション,投打,所属,身長,体重,年齢,寸評
+        </code>
+      </div>
+
+      <h3 class="font-semibold mb-2">項目説明：</h3>
+      <ul class="list-disc list-inside text-sm text-gray-700 space-y-1 mb-4">
+        <li><strong>ID：</strong> 選手ID</li>
+        <li><strong>カテゴリ：</strong> 高校生/大学生/社会人/独立リーグ/その他</li>
+        <li><strong>名前：</strong> 選手名</li>
+        <li><strong>ふりがな：</strong> 選手名のふりがな</li>
+        <li><strong>ポジション：</strong> 投/捕/一/二/三/遊/左/中/右 (複数の場合は/で区切る)</li>
+        <li><strong>投打：</strong> 右投右打/右投左打/右投両打/左投右打/左投左打/左投両打</li>
+        <li><strong>所属：</strong> チームや学校名など</li>
+        <li><strong>身長：</strong> cm単位の数値</li>
+        <li><strong>体重：</strong> kg単位の数値</li>
+        <li><strong>年齢：</strong> 数値</li>
+        <li><strong>寸評：</strong> 選手の特徴など</li>
+      </ul>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6">
+      <div class="flex gap-4">
+        <%= button_to "エクスポート", player_export_path, method: :post, data: { turbo: false }, class: "bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded transition duration-200" %>
+        <%= link_to "キャンセル", players_path, class: "bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded transition duration-200" %>
+      </div>
+    </div>
+  </div>
+</div>

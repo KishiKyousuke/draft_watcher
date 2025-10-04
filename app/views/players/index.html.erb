@@ -6,6 +6,8 @@
     <div class="flex gap-3 mb-6">
       <%= link_to t('players.index.new_player'), new_player_path, class: "inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
       <%= link_to t('players.index.pick_results'), picks_path, class: "inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
+      <%= link_to "CSVエクスポート", new_player_export_path, class: "inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
+      <%= link_to "CSVインポート", new_player_import_path, class: "inline-flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
     </div>
 
     <!-- Search Form -->

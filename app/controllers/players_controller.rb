@@ -1,6 +1,24 @@
 class PlayersController < ApplicationController
   def index
-    @players = Player.includes(:positions, :picks).all
+    @players = Player.includes(:positions, :picks)
+
+    # 名前・ふりがな検索
+    if params[:query].present?
+      @players = @players.where('players.name LIKE ? OR players.name_kana LIKE ?', "%#{params[:query]}%", "%#{params[:query]}%")
+    end
+
+    # カテゴリ検索
+    if params[:category].present?
+      @players = @players.where(category: params[:category])
+    end
+
+    # ポジション検索
+    if params[:position_id].present?
+      @players = @players.joins(:positions).where(positions: { id: params[:position_id] })
+    end
+
+    @players = @players.distinct.page(params[:page]).per(50)
+    @positions = Position.all
   end
 
   def show

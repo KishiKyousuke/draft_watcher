@@ -65,6 +65,13 @@ ja:
       not_registered: 未登録
       not_drafted: 未指名
       training: "(育成)"
+      search:
+        query: 名前・ふりがな
+        query_placeholder: 選手名で検索
+        category: カテゴリ
+        position: ポジション
+        submit: 検索
+        clear: クリア
     show:
       title: 選手詳細
       add_pick: 指名結果を追加

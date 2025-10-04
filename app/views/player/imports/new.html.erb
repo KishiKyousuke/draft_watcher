@@ -1,0 +1,42 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold mb-8">選手データインポート</h1>
+
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+      <h2 class="text-xl font-semibold mb-4">CSVフォーマット</h2>
+      <p class="mb-4 text-gray-700">以下の形式のCSVファイルをアップロードしてください：</p>
+      <div class="bg-gray-100 p-4 rounded mb-4 overflow-x-auto">
+        <code class="text-sm">
+          カテゴリ,名前,ふりがな,ポジション,投打,所属,身長,体重,年齢,寸評<br>
+          高校生,山田太郎,やまだたろう,投/右,右投右打,〇〇高校,180,75,18,速球が武器
+        </code>
+      </div>
+
+      <h3 class="font-semibold mb-2">項目説明：</h3>
+      <ul class="list-disc list-inside text-sm text-gray-700 space-y-1 mb-4">
+        <li><strong>カテゴリ（必須）：</strong> 高校生/大学生/社会人/独立リーグ/その他</li>
+        <li><strong>名前（必須）：</strong> 選手名</li>
+        <li><strong>ふりがな（必須）：</strong> 選手名のふりがな</li>
+        <li><strong>ポジション：</strong> 投/捕/一/二/三/遊/左/中/右 (複数の場合は/で区切る)</li>
+        <li><strong>投打：</strong> 右投右打/右投左打/右投両打/左投右打/左投左打/左投両打</li>
+        <li><strong>所属：</strong> チームや学校名など</li>
+        <li><strong>身長：</strong> cm単位の数値</li>
+        <li><strong>体重：</strong> kg単位の数値</li>
+        <li><strong>年齢：</strong> 数値</li>
+        <li><strong>寸評：</strong> 選手の特徴など</li>
+      </ul>
+    </div>
+
+    <%= form_with url: player_import_path, method: :post, local: true, class: "bg-white shadow-md rounded-lg p-6" do |f| %>
+      <div class="mb-6">
+        <%= f.label :file, "CSVファイル", class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= f.file_field :file, accept: ".csv", required: true, class: "block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" %>
+      </div>
+
+      <div class="flex gap-4">
+        <%= f.submit "インポート", class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded transition duration-200" %>
+        <%= link_to "キャンセル", players_path, class: "bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded transition duration-200" %>
+      </div>
+    <% end %>
+  </div>
+</div>

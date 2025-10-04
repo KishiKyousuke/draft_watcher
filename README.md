@@ -11,19 +11,23 @@ Draft WatcherはNPB（日本プロ野球）のドラフト会議に関するデ�
 - **ドラフト候補選手の管理**
   - ドラフト候補選手のCRUD操作（登録・編集・削除・一覧表示）
   - 選手の詳細情報管理（所属、ポジション、身体情報、寸評など）
+  - ページネーション機能（1ページ50件表示）
 
 - **検索機能**
   - 候補選手の条件検索
-  - 年度別、カテゴリ別、ポジション別での絞り込み
+  - 名前・ふりがなでの検索
+  - カテゴリ別、ポジション別での絞り込み
 
 - **ドラフト結果の記録**
   - 指名球団と指名順位の登録
   - 未指名選手の管理
   - 育成指名の区別
+  - 指名確定フラグの管理
 
-- **年度別データ閲覧**
-  - 各年度のドラフト結果の振り返り
-  - 球団別指名状況の確認
+- **CSV インポート・エクスポート**
+  - 選手データのCSV一括エクスポート
+  - CSVファイルからの選手データ一括インポート
+  - エラーハンドリング（行番号付きエラー表示）
 
 ## データベース設計
 
@@ -42,7 +46,7 @@ erDiagram
 
     PLAYERS {
         int id PK
-        int category_id "カテゴリ(0:高校生,1:大学生,2:社会人,3:独立,4:その他)"
+        int category "カテゴリ(0:高校生,1:大学生,2:社会人,3:独立,4:その他)"
         string name "名前"
         string name_kana "ふりがな"
         int pitching_batting "投打(enum)"
@@ -74,10 +78,11 @@ erDiagram
     PICKS {
         int id PK
         int player_id FK
-        int team_id FK "nullable"
+        int team_id FK
         int year "ドラフト年度"
         int draft_round "指名順位"
-        boolean training_player "育成指名フラグ"
+        boolean training_player "育成指名フラグ(default: false)"
+        boolean confirmed "確定フラグ(default: true)"
         datetime created_at
         datetime updated_at
     }
@@ -142,4 +147,36 @@ rails server
 - **Backend**: Ruby on Rails 8.0
 - **Database**: SQLite3
 - **Frontend**: Hotwire (Turbo + Stimulus)
-- **Styling**: Propshaft
+- **CSS Framework**: Tailwind CSS
+- **Asset Pipeline**: Propshaft
+- **Pagination**: Kaminari
+- **I18n**: 日本語対応（config/locales/ja.yml）
+
+## アーキテクチャ
+
+### サービスクラス
+
+ビジネスロジックをコントローラーから分離するため、以下のサービスクラスを実装：
+
+- **PlayerCsvExporter**: 選手データのCSVエクスポート処理
+  - I18nを使用した日本語変換
+  - ポジション情報のフォーマット
+
+- **PlayerCsvImporter**: 選手データのCSVインポート処理
+  - バリデーション・エラーハンドリング
+  - トランザクション処理
+  - N+1クエリ対策（Position事前読み込み）
+
+### ルーティング設計
+
+RESTfulな設計に準拠：
+
+```ruby
+resources :players              # 選手管理
+resources :picks                # 指名結果管理
+
+namespace :player do
+  resource :import              # CSVインポート
+  resource :export              # CSVエクスポート
+end
+```

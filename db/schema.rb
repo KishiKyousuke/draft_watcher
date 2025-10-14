@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_14_140103) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_14_140300) do
   create_table "drafts", force: :cascade do |t|
     t.integer "year", null: false
     t.boolean "starts_with_central", default: true
-    t.boolean "is_virtual", default: false
+    t.boolean "virtual", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

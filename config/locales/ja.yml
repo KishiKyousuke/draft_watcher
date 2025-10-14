@@ -53,6 +53,7 @@ ja:
         team: 指名球団
         player: 選手
         confirmed: 確定
+        final_pick: 最終指名
 
   players:
     index:

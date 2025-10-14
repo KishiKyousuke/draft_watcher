@@ -71,6 +71,12 @@
           <%= form.check_box :confirmed, class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %>
           <%= form.label :confirmed, Pick.human_attribute_name(:confirmed), class: "ml-2 text-sm text-gray-700" %>
         </div>
+
+        <!-- Final Pick -->
+        <div class="flex items-center">
+          <%= form.check_box :final_pick, class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %>
+          <%= form.label :final_pick, Pick.human_attribute_name(:final_pick), class: "ml-2 text-sm text-gray-700" %>
+        </div>
       </div>
 
       <!-- Actions -->

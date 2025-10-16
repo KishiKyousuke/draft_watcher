@@ -1,0 +1,60 @@
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Header -->
+  <div class="mb-8 flex justify-between items-center">
+    <h1 class="text-3xl font-bold text-gray-900">ドラフト会議一覧</h1>
+    <%= link_to "新規作成", new_draft_path, class: "inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
+  </div>
+
+  <!-- Drafts List -->
+  <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <% if @drafts.any? %>
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">年度</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">先攻リーグ</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">種別</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <% @drafts.each do |draft| %>
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900"><%= draft.year %>年</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">
+                  <%= draft.starts_with_central ? "セ・リーグ" : "パ・リーグ" %>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <% if draft.virtual %>
+                  <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                    バーチャル
+                  </span>
+                <% else %>
+                  <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                    本番
+                  </span>
+                <% end %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex gap-2">
+                  <%= link_to "詳細", draft_path(draft), class: "text-blue-600 hover:text-blue-900" %>
+                  <%= link_to "編集", edit_draft_path(draft), class: "text-yellow-600 hover:text-yellow-900" %>
+                  <%= link_to "削除", draft_path(draft), data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, class: "text-red-600 hover:text-red-900" %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="px-6 py-12 text-center">
+        <p class="text-gray-500">ドラフト会議が登録されていません。</p>
+        <%= link_to "最初のドラフト会議を作成", new_draft_path, class: "mt-4 inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -11,6 +11,8 @@ ja:
       team: チーム
       position: ポジション
       pick: 指名結果
+      draft: ドラフト会議
+      team_standing: チーム順位
     attributes:
       player:
         name: 名前
@@ -53,6 +55,15 @@ ja:
         team: 指名球団
         player: 選手
         confirmed: 確定
+        final_pick: 最終指名
+      draft:
+        year: 年度
+        starts_with_central: 先攻リーグ
+        virtual: バーチャルドラフト
+      team_standing:
+        draft: ドラフト会議
+        team: チーム
+        rank: 順位
 
   players:
     index:

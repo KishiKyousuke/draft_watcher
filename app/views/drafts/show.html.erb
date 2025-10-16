@@ -1,0 +1,86 @@
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Header -->
+  <div class="mb-8 flex justify-between items-center">
+    <h1 class="text-3xl font-bold text-gray-900"><%= @draft.year %>年 ドラフト会議</h1>
+    <div class="flex gap-2">
+      <%= link_to "編集", edit_draft_path(@draft), class: "inline-flex items-center px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
+      <%= link_to "一覧に戻る", drafts_path, class: "inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
+    </div>
+  </div>
+
+  <!-- Draft Details Card -->
+  <div class="bg-white shadow-md rounded-lg overflow-hidden mb-6">
+    <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+      <h2 class="text-lg font-semibold text-gray-900">基本情報</h2>
+    </div>
+    <div class="px-6 py-4">
+      <dl class="grid grid-cols-1 gap-4">
+        <div>
+          <dt class="text-sm font-medium text-gray-500">年度</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @draft.year %>年</dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500">先攻リーグ</dt>
+          <dd class="mt-1 text-sm text-gray-900">
+            <%= @draft.starts_with_central ? "セ・リーグ" : "パ・リーグ" %>
+          </dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500">種別</dt>
+          <dd class="mt-1">
+            <% if @draft.virtual %>
+              <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                バーチャルドラフト（シミュレーション/練習用）
+              </span>
+            <% else %>
+              <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                本番ドラフト
+              </span>
+            <% end %>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <!-- Team Standings Card -->
+  <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+      <h2 class="text-lg font-semibold text-gray-900">チーム順位</h2>
+    </div>
+    <% if @team_standings.any? %>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">順位</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">球団</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">リーグ</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <% @team_standings.each do |standing| %>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm font-medium text-gray-900"><%= standing.rank %>位</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-900"><%= standing.team.name %></div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-500">
+                    <%= standing.team.central? ? "セ・リーグ" : "パ・リーグ" %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="px-6 py-8 text-center">
+        <p class="text-gray-500">チーム順位が設定されていません。</p>
+      </div>
+    <% end %>
+  </div>
+</div>

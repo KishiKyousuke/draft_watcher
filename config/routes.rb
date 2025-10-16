@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :players
   resources :picks, except: [:show]
+  resources :drafts
 
   namespace :player do
     resource :import, only: [:new, :create]

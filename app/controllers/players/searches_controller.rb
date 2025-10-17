@@ -1,14 +1,14 @@
 class Players::SearchesController < ApplicationController
   def index
     @players = if params[:query].present?
-                 Player.where("name LIKE ? OR name_kana LIKE ?",
+                 Player.where('name LIKE ? OR name_kana LIKE ?',
                              "%#{params[:query]}%",
                              "%#{params[:query]}%")
                        .order(:name_kana)
                        .limit(20)
-               else
+    else
                  Player.none
-               end
+    end
 
     respond_to do |format|
       format.turbo_stream

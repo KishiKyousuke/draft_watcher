@@ -1,0 +1,20 @@
+<%= turbo_stream.update "player-search-results" do %>
+  <% if @players.any? %>
+    <ul class="mt-2 border border-gray-300 rounded-md max-h-60 overflow-y-auto bg-white shadow-lg">
+      <% @players.each do |player| %>
+        <li class="px-4 py-2 hover:bg-blue-50 cursor-pointer border-b last:border-b-0"
+            data-action="click->player-search#selectPlayer"
+            data-player-id="<%= player.id %>"
+            data-player-name="<%= player.name %>"
+            data-player-kana="<%= player.name_kana %>">
+          <span class="font-medium"><%= player.name %></span>
+          <span class="text-gray-500 text-sm ml-2">(<%= player.name_kana %>)</span>
+        </li>
+      <% end %>
+    </ul>
+  <% elsif params[:query].present? %>
+    <div class="mt-2 p-4 text-sm text-gray-500 border border-gray-300 rounded-md bg-gray-50">
+      該当する選手が見つかりませんでした
+    </div>
+  <% end %>
+<% end %>

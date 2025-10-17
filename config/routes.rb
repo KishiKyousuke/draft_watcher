@@ -1,12 +1,16 @@
 Rails.application.routes.draw do
-  resources :players
-  resources :picks, except: [:show]
-  resources :drafts
-
   namespace :player do
     resource :import, only: [:new, :create]
     resource :export, only: [:new, :create]
   end
+
+  namespace :players do
+    resources :searches, only: [:index]
+  end
+
+  resources :players
+  resources :picks, except: [:show]
+  resources :drafts
 
   root 'players#index'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

@@ -50,6 +50,7 @@ ja:
         short_name: 略称
       pick:
         year: 年度
+        draft: ドラフト
         draft_round: 指名順位
         training_player: 育成指名
         team: 指名球団

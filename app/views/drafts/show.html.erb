@@ -43,43 +43,78 @@
     </div>
   </div>
 
-  <!-- Team Standings Card -->
-  <div class="bg-white shadow-md rounded-lg overflow-hidden">
-    <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
-      <h2 class="text-lg font-semibold text-gray-900">チーム順位</h2>
-    </div>
+  <!-- Team Standings and Picks -->
+  <div class="space-y-6">
     <% if @team_standings.any? %>
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
-            <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">順位</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">球団</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">リーグ</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <% @team_standings.each do |standing| %>
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm font-medium text-gray-900"><%= standing.rank %>位</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900"><%= standing.team.name %></div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-500">
-                    <%= standing.team.central? ? "セ・リーグ" : "パ・リーグ" %>
+      <% @team_standings.each do |standing| %>
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+          <!-- Team Header -->
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+            <div>
+              <h2 class="text-lg font-semibold text-gray-900">
+                <%= standing.rank %>位: <%= standing.team.name %>
+                <span class="text-sm text-gray-500 ml-2">
+                  (<%= standing.team.central? ? "セ・リーグ" : "パ・リーグ" %>)
+                </span>
+              </h2>
+            </div>
+            <div>
+              <%= link_to "指名追加",
+                  new_pick_path(draft_id: @draft.id, team_id: standing.team.id),
+                  class: "inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition duration-150 ease-in-out" %>
+            </div>
+          </div>
+
+          <!-- Picks List -->
+          <div class="px-6 py-4">
+            <% team_picks = @picks_by_team[standing.team.id] || [] %>
+            <% if team_picks.any? %>
+              <div class="space-y-2">
+                <% team_picks.each do |pick| %>
+                  <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                    <div class="flex items-center space-x-4">
+                      <span class="text-sm font-medium text-gray-900">
+                        <%= pick.draft_round %>巡目
+                      </span>
+                      <span class="text-sm text-gray-900">
+                        <%= link_to pick.player.name, player_path(pick.player), class: "text-blue-600 hover:text-blue-800" %>
+                      </span>
+                      <% if pick.training_player %>
+                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                          育成
+                        </span>
+                      <% end %>
+                      <% if pick.draft_round == 1 && !pick.training_player && !pick.confirmed %>
+                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
+                          抽選待ち
+                        </span>
+                      <% end %>
+                      <% if pick.final_pick %>
+                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                          完全終了
+                        </span>
+                      <% end %>
+                    </div>
+                    <div class="flex gap-2">
+                      <%= link_to "編集", edit_pick_path(pick), class: "text-sm text-blue-600 hover:text-blue-800" %>
+                      <%= button_to "削除", pick_path(pick), method: :delete,
+                          data: { turbo_confirm: "本当に削除しますか?" },
+                          class: "text-sm text-red-600 hover:text-red-800" %>
+                    </div>
                   </div>
-                </td>
-              </tr>
+                <% end %>
+              </div>
+            <% else %>
+              <p class="text-sm text-gray-500">まだ指名がありません</p>
             <% end %>
-          </tbody>
-        </table>
-      </div>
+          </div>
+        </div>
+      <% end %>
     <% else %>
-      <div class="px-6 py-8 text-center">
-        <p class="text-gray-500">チーム順位が設定されていません。</p>
+      <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="px-6 py-8 text-center">
+          <p class="text-gray-500">チーム順位が設定されていません。</p>
+        </div>
       </div>
     <% end %>
   </div>

@@ -7,6 +7,12 @@ class DraftsController < ApplicationController
 
   def show
     @team_standings = @draft.team_standings.includes(:team).order(:rank)
+
+    # 各球団の指名結果を取得（N+1対策）
+    @picks_by_team = @draft.picks
+                           .includes(:player, :team)
+                           .group_by(&:team_id)
+                           .transform_values { |picks| picks.sort_by(&:draft_round) }
   end
 
   def new

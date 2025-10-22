@@ -13,10 +13,11 @@ class DraftsController < ApplicationController
                             .in_order_of(:league, leagues)
 
     # 各球団の指名結果を取得（N+1対策）
+    # 支配下指名→育成指名の順、各グループ内で順位昇順に並び替え
     @picks_by_team = @draft.picks
                            .includes(:player, :team)
                            .group_by(&:team_id)
-                           .transform_values { |picks| picks.sort_by(&:draft_round) }
+                           .transform_values { |picks| picks.sort_by { |p| [p.training_player ? 1 : 0, p.draft_round] } }
   end
 
   def new

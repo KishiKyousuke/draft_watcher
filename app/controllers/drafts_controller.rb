@@ -6,7 +6,11 @@ class DraftsController < ApplicationController
   end
 
   def show
-    @team_standings = @draft.team_standings.includes(:team).order(:rank)
+    leagues = @draft.starts_with_central? ? [Team.leagues[:central], Team.leagues[:pacific]] : [Team.leagues[:pacific], Team.leagues[:central]]
+    @team_standings = @draft.team_standings
+                            .eager_load(:team)
+                            .order(rank: :desc)
+                            .in_order_of(:league, leagues)
 
     # 各球団の指名結果を取得（N+1対策）
     @picks_by_team = @draft.picks

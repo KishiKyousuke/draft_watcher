@@ -14,17 +14,19 @@ class Draft < ApplicationRecord
 
   # 特定球団の次の指名順位を計算
   def next_draft_round_for_team(team)
-    last_pick = picks.where(team: team).order(:draft_round).last
-
-    # 1位指名で未確定のものがある場合は1を返す
-    if picks.where(team: team, draft_round: 1, training_player: false, confirmed: false).exists?
-      return 1
-    end
+    team_picks = picks.where(team: team)
 
     # 指名がない場合は1
-    return 1 if last_pick.nil?
+    return 1 if team_picks.empty?
 
-    # 最終指名がある場合は育成指名として扱う
-    last_pick.draft_round + 1
+    # 確定した指名の最大順位を取得
+    confirmed_picks = team_picks.where(confirmed: true).or(team_picks.where(training_player: true))
+    max_confirmed_round = confirmed_picks.maximum(:draft_round)
+
+    # 確定した指名がある場合、その次の順位を返す
+    return max_confirmed_round + 1 if max_confirmed_round.present?
+
+    # 確定した指名がなく、未確定の1位指名のみの場合は1を返す
+    1
   end
 end

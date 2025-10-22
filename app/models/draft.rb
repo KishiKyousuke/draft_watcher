@@ -19,6 +19,14 @@ class Draft < ApplicationRecord
     # 指名がない場合は1
     return 1 if team_picks.empty?
 
+    # final_pickが存在する場合は育成指名フェーズ
+    if team_picks.where(final_pick: true).exists?
+      # 育成指名の最大順位を取得
+      training_picks = team_picks.where(training_player: true)
+      max_training_round = training_picks.maximum(:draft_round)
+      return max_training_round.present? ? max_training_round + 1 : 1
+    end
+
     # 確定した指名の最大順位を取得
     confirmed_picks = team_picks.where(confirmed: true).or(team_picks.where(training_player: true))
     max_confirmed_round = confirmed_picks.maximum(:draft_round)

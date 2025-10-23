@@ -1,8 +1,11 @@
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
   <!-- Header -->
-  <div class="mb-8 flex justify-between items-center">
-    <h1 class="text-3xl font-bold text-gray-900">ドラフト会議一覧</h1>
-    <%= link_to "新規作成", new_draft_path, class: "inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-4">ドラフト会議一覧</h1>
+    <div class="flex gap-3">
+      <%= link_to "選手一覧", players_path, class: "inline-flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
+      <%= link_to "新規作成", new_draft_path, class: "inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
+    </div>
   </div>
 
   <!-- Drafts List -->

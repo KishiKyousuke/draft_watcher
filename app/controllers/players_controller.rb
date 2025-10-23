@@ -17,10 +17,9 @@ class PlayersController < ApplicationController
       @players = @players.joins(:positions).where(positions: { id: params[:position_id] })
     end
 
-    # 未指名のみフィルター
+    # 未指名のみフィルター（本番ドラフトで確定した指名がない選手）
     if params[:undrafted_only] == '1'
       @players = @players.left_joins(picks: :draft)
-                         .where('picks.id IS NULL OR drafts.virtual = ? OR picks.confirmed = ?', true, false)
                          .group('players.id')
                          .having('COUNT(CASE WHEN drafts.virtual = ? AND picks.confirmed = ? THEN 1 END) = 0', false, true)
     end

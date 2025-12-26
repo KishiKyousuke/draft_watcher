@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-class Pick::ImportsController < ApplicationController
-  def new; end
-
+class Pick::Csv::ImportsController < ApplicationController
   def create
     if params[:import].blank? || params[:import][:csv_file].blank?
       flash[:alert] = 'CSVファイルを選択してください'
-      redirect_to new_pick_import_path
+      redirect_to new_pick_csv_path
       return
     end
 
@@ -18,10 +16,10 @@ class Pick::ImportsController < ApplicationController
       redirect_to picks_path
     else
       flash[:alert] = importer.errors.join('、')
-      redirect_to new_pick_import_path
+      redirect_to new_pick_csv_path
     end
   rescue PickCsvImporter::ImportError => e
     flash[:alert] = e.message
-    redirect_to new_pick_import_path
+    redirect_to new_pick_csv_path
   end
 end

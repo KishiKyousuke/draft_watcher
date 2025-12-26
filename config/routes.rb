@@ -5,7 +5,10 @@ Rails.application.routes.draw do
   end
 
   namespace :pick do
-    resource :import, only: [:new, :create]
+    resource :csv, only: [:new], controller: 'csv' do
+      resource :import, only: [:create], controller: 'csv/imports'
+      resource :export, only: [:create], controller: 'csv/exports'
+    end
   end
 
   namespace :players do

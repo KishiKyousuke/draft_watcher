@@ -4,6 +4,10 @@ Rails.application.routes.draw do
     resource :export, only: [:new, :create]
   end
 
+  namespace :pick do
+    resource :import, only: [:new, :create]
+  end
+
   namespace :players do
     resources :searches, only: [:index]
   end

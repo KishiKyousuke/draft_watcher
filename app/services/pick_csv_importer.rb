@@ -3,12 +3,13 @@ class PickCsvImporter
 
   class ImportError < StandardError; end
 
-  attr_reader :errors, :imported_count
+  attr_reader :errors, :imported_count, :skipped_count
 
   def initialize(csv_file)
     @csv_file = csv_file
     @errors = []
     @imported_count = 0
+    @skipped_count = 0
   end
 
   def import
@@ -18,9 +19,10 @@ class PickCsvImporter
     ActiveRecord::Base.transaction do
       csv.each_with_index do |row, index|
         line_number = index + 2 # ヘッダー行が1行目なので+2
-        import_row(row, line_number)
+        result = import_row(row, line_number)
+        @imported_count += 1 if result == :created
+        @skipped_count += 1 if result == :skipped
       end
-      @imported_count = csv.size
     end
 
     true
@@ -58,6 +60,19 @@ class PickCsvImporter
     team = Team.find_by(name: team_name)
     raise ImportError, "#{line_number}行目: 球団が見つかりません (名前: #{team_name})" if team.nil?
 
+    # 既存のPickをチェック（重複回避）
+    existing_pick = Pick.find_by(
+      draft: draft,
+      player: player,
+      team: team,
+      draft_round: draft_round,
+      training_player: training_player
+    )
+
+    if existing_pick
+      return :skipped
+    end
+
     # Pick を作成
     pick = Pick.new(
       draft: draft,
@@ -73,6 +88,8 @@ class PickCsvImporter
       error_messages = pick.errors.full_messages.join(', ')
       raise ImportError, "#{line_number}行目: #{error_messages}"
     end
+
+    :created
   end
 
   def convert_boolean(value, line_number)

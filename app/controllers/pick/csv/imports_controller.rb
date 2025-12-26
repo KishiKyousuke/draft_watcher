@@ -12,7 +12,11 @@ class Pick::Csv::ImportsController < ApplicationController
     importer = PickCsvImporter.new(csv_file)
 
     if importer.import
-      flash[:notice] = "#{importer.imported_count}件をインポートしました"
+      message_parts = []
+      message_parts << "#{importer.imported_count}件を新規作成しました" if importer.imported_count > 0
+      message_parts << "#{importer.skipped_count}件をスキップしました（既存データ）" if importer.skipped_count > 0
+
+      flash[:notice] = message_parts.join('、')
       redirect_to picks_path
     else
       flash[:alert] = importer.errors.join('、')

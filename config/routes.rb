@@ -4,6 +4,13 @@ Rails.application.routes.draw do
     resource :export, only: [:new, :create]
   end
 
+  namespace :pick do
+    resource :csv, only: [:new], controller: 'csv' do
+      resource :import, only: [:create], controller: 'csv/imports'
+      resource :export, only: [:create], controller: 'csv/exports'
+    end
+  end
+
   namespace :players do
     resources :searches, only: [:index]
   end

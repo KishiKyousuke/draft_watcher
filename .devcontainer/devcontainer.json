@@ -1,0 +1,27 @@
+{
+  "name": "draft_watcher",
+  "image": "mcr.microsoft.com/devcontainers/ruby:3.3",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts"
+    }
+  },
+  "postCreateCommand": "npm install -g @anthropic-ai/claude-code && bundle install && rails db:create && rails db:migrate && rails db:seed && rails tailwindcss:build",
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "Rails Server",
+      "onAutoForward": "notify"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Shopify.ruby-lsp"
+      ]
+    }
+  },
+  "remoteEnv": {
+    "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}"
+  }
+}

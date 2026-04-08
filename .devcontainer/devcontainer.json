@@ -23,5 +23,9 @@
   },
   "remoteEnv": {
     "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}"
-  }
+  },
+  "mounts": [
+    "source=${localEnv:HOME}/.claude,target=/root/.claude,type=bind",
+    "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,readonly"
+  ]
 }

@@ -1,6 +1,6 @@
 class PlayersController < ApplicationController
   def index
-    @players = Player.includes(:positions, :picks)
+    @players = Player.includes(:positions, picks: :draft)
 
     # 名前・ふりがな検索
     if params[:query].present?
@@ -15,6 +15,13 @@ class PlayersController < ApplicationController
     # ポジション検索
     if params[:position_id].present?
       @players = @players.joins(:positions).where(positions: { id: params[:position_id] })
+    end
+
+    # 未指名のみフィルター（本番ドラフトで確定した指名がない選手）
+    if params[:undrafted_only] == '1'
+      @players = @players.left_joins(picks: :draft)
+                         .group('players.id')
+                         .having('COUNT(CASE WHEN drafts.virtual = ? AND picks.confirmed = ? THEN 1 END) = 0', false, true)
     end
 
     @players = @players.distinct.page(params[:page]).per(50)

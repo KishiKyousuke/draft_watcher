@@ -70,6 +70,7 @@ ja:
     index:
       title: ドラフト候補選手一覧
       new_player: 新規選手登録
+      draft_list: ドラフト一覧
       pick_results: 指名結果一覧
       no_players: ドラフト候補選手が登録されていません。
       height_weight: 身長/体重
@@ -82,6 +83,7 @@ ja:
         query_placeholder: 選手名で検索
         category: カテゴリ
         position: ポジション
+        undrafted_only: 未指名のみ
         submit: 検索
         clear: クリア
     show:

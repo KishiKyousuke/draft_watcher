@@ -5,6 +5,7 @@
 
     <div class="flex gap-3 mb-6">
       <%= link_to t('players.index.new_player'), new_player_path, class: "inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
+      <%= link_to t('players.index.draft_list'), drafts_path, class: "inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
       <%= link_to t('players.index.pick_results'), picks_path, class: "inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
       <%= link_to "CSVエクスポート", new_player_export_path, class: "inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
       <%= link_to "CSVインポート", new_player_import_path, class: "inline-flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
@@ -36,6 +37,13 @@
                 options_for_select([['すべて', '']] + @positions.map { |p| [p.name, p.id] }, params[:position_id]),
                 {},
                 { class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-4 py-2 border" } %>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <div class="flex items-center">
+            <%= form.check_box :undrafted_only, { checked: params[:undrafted_only] == '1', class: "rounded border-gray-300 text-blue-600 focus:ring-blue-500" }, '1', '0' %>
+            <%= form.label :undrafted_only, t('players.index.search.undrafted_only'), class: "ml-2 text-sm text-gray-700" %>
           </div>
         </div>
 
@@ -115,8 +123,9 @@
                   <%= "#{player.age}#{t('units.age')}" if player.age %>
                 </td>
                 <td class="px-6 py-4 text-sm text-gray-900">
-                  <% if player.picks.any? %>
-                    <% player.picks.each do |result| %>
+                  <% confirmed = player.confirmed_picks %>
+                  <% if confirmed.any? %>
+                    <% confirmed.each do |result| %>
                       <div class="mb-1">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                           <%= result.year %><%= t('units.year') %>

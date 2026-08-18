@@ -2,7 +2,7 @@ class DraftsController < ApplicationController
   before_action :set_draft, only: [:show, :edit, :update, :destroy]
 
   def index
-    @drafts = Draft.all.order(year: :desc)
+    @drafts = Draft.all.order(created_at: :desc)
   end
 
   def show

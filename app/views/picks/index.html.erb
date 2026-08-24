@@ -3,8 +3,9 @@
   <div class="mb-8">
     <h1 class="text-3xl font-bold text-gray-900 mb-6">指名結果一覧</h1>
 
-    <div>
+    <div class="space-x-2">
       <%= link_to t('picks.index.players'), players_path, class: "inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
+      <%= link_to '指名結果CSV管理', new_pick_csv_path, class: "inline-flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition duration-150 ease-in-out" %>
     </div>
   </div>
 

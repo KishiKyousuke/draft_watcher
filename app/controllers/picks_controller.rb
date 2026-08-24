@@ -1,6 +1,6 @@
 class PicksController < ApplicationController
   def index
-    @picks = Pick.includes(:player, :team, :draft).page(params[:page]).per(50)
+    @picks = Pick.official.includes(:player, :team, :draft).page(params[:page]).per(50)
   end
 
   def new

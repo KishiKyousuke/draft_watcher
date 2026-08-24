@@ -432,9 +432,9 @@ DEPENDENCIES
   capybara
   database_cleaner-active_record
   debug
+  dockerfile-rails (>= 1.7)
   factory_bot_rails
   faker
-  dockerfile-rails (>= 1.7)
   importmap-rails
   jbuilder
   kamal

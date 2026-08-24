@@ -74,3 +74,5 @@ end
 gem 'tailwindcss-rails', '~> 4.3'
 
 gem 'kaminari'
+
+gem 'dockerfile-rails', '>= 1.7', group: :development

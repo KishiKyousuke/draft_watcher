@@ -46,11 +46,9 @@ class PickCsvImporter
     confirmed = convert_boolean(row['確定'], line_number)
     final_pick = convert_boolean(row['最終指名'], line_number)
 
-    # ドラフトを検索または作成
-    draft = Draft.find_or_create_by(year: year) do |d|
-      d.starts_with_central = true
-      d.virtual = false
-    end
+    # 本番ドラフトを検索（存在しない場合はエラー）
+    draft = Draft.find_by(year: year, virtual: false)
+    raise ImportError, "#{line_number}行目: #{year}年の本番ドラフトが見つかりません。先にドラフト会議を作成してください" if draft.nil?
 
     # 選手を検索
     player = Player.find_by(name: player_name, affiliation: affiliation)

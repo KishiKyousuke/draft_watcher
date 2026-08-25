@@ -15,6 +15,9 @@ class Pick < ApplicationRecord
 
   before_validation :set_confirmed_default, on: :create
 
+  # 本番ドラフト（仮想ドラフトを除く）の指名結果のみ
+  scope :official, -> { joins(:draft).where(drafts: { virtual: false }) }
+
   # draftから年度を取得
   def year
     draft&.year

@@ -30,6 +30,7 @@ class PlayersController < ApplicationController
 
   def show
     @player = Player.find(params[:id])
+    @pick_results = @player.picks.official.includes(:team, :draft)
   end
 
   def new

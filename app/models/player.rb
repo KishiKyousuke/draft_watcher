@@ -26,9 +26,7 @@ class Player < ApplicationRecord
 
   # 本番ドラフトの確定した指名のみを返す
   def confirmed_picks
-    picks.joins(:draft)
-         .where(drafts: { virtual: false })
-         .where(confirmed: true)
+    picks.merge(Pick.official).where(confirmed: true)
   end
 
   # 本番ドラフトで指名されているかを判定

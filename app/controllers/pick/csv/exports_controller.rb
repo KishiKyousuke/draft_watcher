@@ -2,7 +2,7 @@
 
 class Pick::Csv::ExportsController < ApplicationController
   def create
-    picks = Pick.includes(:player, :team, :draft, player: :positions)
+    picks = Pick.official.includes(:player, :team, :draft, player: :positions)
     exporter = PickCsvExporter.new(picks)
     csv_content = exporter.generate
 

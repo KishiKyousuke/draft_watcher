@@ -81,6 +81,11 @@
                     <%= t('players.index.not_drafted') %>
                   <% end %>
                 </span>
+                <% if result.team && result.confirmed %>
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                    <%= t('players.show.negotiation_rights_acquired') %>
+                  </span>
+                <% end %>
               </div>
               <div class="flex gap-2">
                 <%= link_to t('players.show.edit_pick'), edit_pick_path(result), class: "inline-flex items-center px-3 py-1 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded transition duration-150 ease-in-out" %>

@@ -35,7 +35,15 @@ jobs:
       - name: Write Rails master key
         run: echo "${{ secrets.RAILS_MASTER_KEY }}" > config/master.key
 
-      - name: Deploy with Kamal
+      - name: Build and push image
         env:
           KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
-        run: bundle exec kamal deploy
+        run: bundle exec kamal build push
+
+      - name: Stop current container
+        run: bundle exec kamal app stop || true
+
+      - name: Boot new container
+        env:
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+        run: bundle exec kamal app boot

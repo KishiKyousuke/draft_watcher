@@ -24,7 +24,7 @@ class PlayersController < ApplicationController
                          .having('COUNT(CASE WHEN drafts.virtual = ? AND picks.confirmed = ? THEN 1 END) = 0', false, true)
     end
 
-    @players = @players.distinct.page(params[:page]).per(50)
+    @players = @players.distinct.order(created_at: :desc).page(params[:page]).per(50)
     @positions = Position.all
   end
 

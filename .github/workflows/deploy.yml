@@ -26,7 +26,11 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.GCP_SSH_PRIVATE_KEY }}" > ~/.ssh/google_compute_engine
           chmod 600 ~/.ssh/google_compute_engine
-          ssh-keyscan -H 34.66.114.133 >> ~/.ssh/known_hosts
+          cat >> ~/.ssh/config <<EOF
+          Host 34.66.114.133
+            StrictHostKeyChecking no
+            UserKnownHostsFile /dev/null
+          EOF
 
       - name: Write Rails master key
         run: echo "${{ secrets.RAILS_MASTER_KEY }}" > config/master.key

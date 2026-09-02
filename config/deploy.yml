@@ -8,6 +8,9 @@ image: kishikyousuke/draft_watcher
 servers:
   web:
     - 34.66.114.133
+
+# e2-microはコールドブートに時間がかかるため、デプロイ全体の完了待ち時間を延長する
+deploy_timeout: 120
   # job:
   #   hosts:
   #     - 192.168.0.1

@@ -50,4 +50,4 @@ jobs:
       - name: Boot new container
         env:
           KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
-        run: bundle exec kamal app boot
+        run: bundle exec kamal app boot --version="$VERSION"

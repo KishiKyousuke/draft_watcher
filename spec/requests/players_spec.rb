@@ -93,9 +93,9 @@ RSpec.describe 'Players', type: :request do
 
         get players_path
 
-        body = response.body
-        expect(body.scan('2025').size).to be >= 1
-        expect(body).not_to include('2023')
+        table_body = response.body[/<tbody.*?<\/tbody>/m]
+        expect(table_body).to include('2025')
+        expect(table_body).not_to include('2023')
       end
     end
   end

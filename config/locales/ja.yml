@@ -10,6 +10,7 @@ ja:
       player: 選手
       team: チーム
       position: ポジション
+      player_draft_year: ドラフト候補年
       pick: 指名結果
       draft: ドラフト会議
       team_standing: チーム順位
@@ -48,6 +49,8 @@ ja:
       position:
         name: ポジション名
         short_name: 略称
+      player_draft_year:
+        year: 年
       pick:
         year: 年度
         draft: ドラフト

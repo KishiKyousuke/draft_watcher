@@ -2,6 +2,7 @@ class Player < ApplicationRecord
   has_many :player_positions, dependent: :destroy
   has_many :positions, through: :player_positions
   has_many :picks, dependent: :destroy
+  has_many :player_draft_years, dependent: :destroy
 
   validates :name, presence: true
   validates :name_kana, presence: true
@@ -23,6 +24,22 @@ class Player < ApplicationRecord
     left_handed_left_batting: 4,
     left_handed_both_batting: 5
   }
+
+  # カンマ区切りの複数ドラフト候補年を返す・設定するための仮想属性
+  def draft_years_text
+    player_draft_years.order(year: :desc).pluck(:year).join(', ')
+  end
+
+  def draft_years_text=(text)
+    years = text.to_s.split(',').map(&:strip).reject(&:blank?).map(&:to_i).uniq
+    existing_by_year = player_draft_years.index_by(&:year)
+
+    self.player_draft_years = years.map { |year| existing_by_year[year] || PlayerDraftYear.new(year: year) }
+  end
+
+  def latest_draft_year
+    player_draft_years.maximum(:year)
+  end
 
   # 本番ドラフトの確定した指名のみを返す
   def confirmed_picks

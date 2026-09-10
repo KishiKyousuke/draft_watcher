@@ -35,7 +35,13 @@ class PlayersController < ApplicationController
                        .distinct
                        .page(params[:page]).per(50)
     @positions = Position.all
-    @draft_years = PlayerDraftYear.distinct.order(year: :desc).pluck(:year)
+    # @draft_years: 表示中の各選手の最新の候補年のみを含む
+    @draft_years = Player.joins(:player_draft_years)
+                         .select('DISTINCT MAX(player_draft_years.year) as latest_year')
+                         .group('players.id')
+                         .pluck('MAX(player_draft_years.year)')
+                         .sort
+                         .reverse
   end
 
   def show

@@ -72,5 +72,31 @@ RSpec.describe 'Players', type: :request do
         expect(response.body).not_to include('指名済み選手')
       end
     end
+
+    context '表示' do
+      it '絞り込みセレクトに「すべて」と登録済みの年が表示される' do
+        player = create(:player)
+        player.draft_years_text = '2024'
+        player.save!
+
+        get players_path
+
+        expect(response.body).to include('すべて')
+        expect(response.body).to include('name="draft_year"')
+        expect(response.body).to include('2024')
+      end
+
+      it '一覧には最新の候補年のみ表示される' do
+        player = create(:player, name: '複数年候補選手')
+        player.draft_years_text = '2023, 2025'
+        player.save!
+
+        get players_path
+
+        body = response.body
+        expect(body.scan('2025').size).to be >= 1
+        expect(body).not_to include('2023')
+      end
+    end
   end
 end

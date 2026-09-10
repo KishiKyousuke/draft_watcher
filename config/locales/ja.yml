@@ -79,6 +79,7 @@ ja:
       no_players: ドラフト候補選手が登録されていません。
       height_weight: 身長/体重
       pick_result: 指名結果
+      draft_year: 候補年
       not_registered: 未登録
       not_drafted: 未指名
       training: "(育成)"

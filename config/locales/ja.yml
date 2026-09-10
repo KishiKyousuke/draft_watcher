@@ -87,6 +87,7 @@ ja:
         query_placeholder: 選手名で検索
         category: カテゴリ
         position: ポジション
+        draft_year: ドラフト候補年
         undrafted_only: 未指名のみ
         submit: 検索
         clear: クリア

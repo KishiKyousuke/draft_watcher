@@ -1,6 +1,6 @@
 class PlayersController < ApplicationController
   def index
-    @players = Player.includes(:positions, picks: :draft)
+    @players = Player.includes(:positions, :player_draft_years, picks: :draft)
 
     # 名前・ふりがな検索
     if params[:query].present?
@@ -17,6 +17,11 @@ class PlayersController < ApplicationController
       @players = @players.joins(:positions).where(positions: { id: params[:position_id] })
     end
 
+    # ドラフト候補年検索
+    if params[:draft_year].present?
+      @players = @players.joins(:player_draft_years).where(player_draft_years: { year: params[:draft_year] })
+    end
+
     # 未指名のみフィルター（本番ドラフトで確定した指名がない選手）
     if params[:undrafted_only] == '1'
       @players = @players.left_joins(picks: :draft)
@@ -24,8 +29,13 @@ class PlayersController < ApplicationController
                          .having('COUNT(CASE WHEN drafts.virtual = ? AND picks.confirmed = ? THEN 1 END) = 0', false, true)
     end
 
-    @players = @players.distinct.order(created_at: :desc).page(params[:page]).per(50)
+    @players = @players.left_joins(:player_draft_years)
+                       .group('players.id')
+                       .order(Arel.sql('MAX(player_draft_years.year) DESC, players.created_at DESC'))
+                       .distinct
+                       .page(params[:page]).per(50)
     @positions = Position.all
+    @draft_years = PlayerDraftYear.distinct.order(year: :desc).pluck(:year)
   end
 
   def show

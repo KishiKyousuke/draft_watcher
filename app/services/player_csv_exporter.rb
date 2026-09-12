@@ -1,7 +1,7 @@
 class PlayerCsvExporter
   require 'csv'
 
-  def initialize(players = Player.includes(:positions).order(:id))
+  def initialize(players = Player.includes(:positions, :player_draft_years).order(:id))
     @players = players
   end
 
@@ -17,7 +17,7 @@ class PlayerCsvExporter
   private
 
   def headers
-    ['ID', 'カテゴリ', '名前', 'ふりがな', 'ポジション', '投打', '所属', '身長', '体重', '年齢', '寸評']
+    ['ID', 'カテゴリ', '名前', 'ふりがな', 'ポジション', '投打', '所属', '身長', '体重', '年齢', '寸評', 'ドラフト候補年']
   end
 
   def row_for(player)
@@ -32,7 +32,8 @@ class PlayerCsvExporter
       player.height,
       player.weight,
       player.age,
-      player.description
+      player.description,
+      format_draft_years(player.player_draft_years)
     ]
   end
 
@@ -48,5 +49,9 @@ class PlayerCsvExporter
 
   def format_positions(positions)
     positions.map(&:short_name).join('/')
+  end
+
+  def format_draft_years(player_draft_years)
+    player_draft_years.map(&:year).sort.join('/')
   end
 end

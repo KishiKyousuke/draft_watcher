@@ -116,6 +116,7 @@ ja:
       back_to_index: 一覧に戻る
     form:
       select_prompt: 選択してください
+      draft_years_text_hint: "カンマ区切りで複数入力できます（例: 2024, 2025）"
       categories:
         high_school: 高校生
         university: 大学生

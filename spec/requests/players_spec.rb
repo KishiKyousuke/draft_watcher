@@ -120,4 +120,30 @@ RSpec.describe 'Players', type: :request do
       expect(response.body).to include('未登録')
     end
   end
+
+  describe 'POST /players' do
+    it 'カンマ区切りのドラフト候補年を登録できる' do
+      post players_path, params: {
+        player: {
+          name: '田中太郎', name_kana: 'たなかたろう', category: 'high_school',
+          draft_years_text: '2024, 2025'
+        }
+      }
+
+      player = Player.last
+      expect(player.player_draft_years.pluck(:year)).to contain_exactly(2024, 2025)
+    end
+  end
+
+  describe 'GET /players/:id/edit' do
+    it '既存のドラフト候補年が入力欄に表示される' do
+      player = create(:player)
+      player.draft_years_text = '2023, 2024'
+      player.save!
+
+      get edit_player_path(player)
+
+      expect(response.body).to include('value="2024, 2023"')
+    end
+  end
 end

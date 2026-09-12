@@ -99,4 +99,25 @@ RSpec.describe 'Players', type: :request do
       end
     end
   end
+
+  describe 'GET /players/:id' do
+    it '登録されている候補年をすべて新しい順に表示する' do
+      player = create(:player)
+      player.draft_years_text = '2023, 2025'
+      player.save!
+
+      get player_path(player)
+
+      body = response.body
+      expect(body.index('2025')).to be < body.index('2023')
+    end
+
+    it '候補年が未登録の場合は未登録と表示する' do
+      player = create(:player)
+
+      get player_path(player)
+
+      expect(response.body).to include('未登録')
+    end
+  end
 end

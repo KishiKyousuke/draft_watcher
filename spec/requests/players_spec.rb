@@ -98,6 +98,25 @@ RSpec.describe 'Players', type: :request do
         expect(table_body).not_to include('2023')
       end
     end
+
+    context 'クエリ数' do
+      it '一覧表示で候補年テーブルへのクエリが定数回に収まる（N+1対策）' do
+        3.times do |i|
+          player = create(:player)
+          player.draft_years_text = "#{2020 + i}, #{2023 + i}"
+          player.save!
+        end
+
+        query_count = 0
+        counter = ->(*, payload) { query_count += 1 if payload[:sql].include?('player_draft_years') }
+        ActiveSupport::Notifications.subscribed(counter, 'sql.active_record') do
+          get players_path
+        end
+
+        # 選手が何人いてもクエリ数は一定（プリロード・一覧本体・年フィルターの候補取得など固定数）
+        expect(query_count).to be <= 4
+      end
+    end
   end
 
   describe 'GET /players/:id' do
@@ -133,6 +152,32 @@ RSpec.describe 'Players', type: :request do
       player = Player.last
       expect(player.player_draft_years.pluck(:year)).to contain_exactly(2024, 2025)
     end
+
+    it '無効なドラフト候補年トークンを含む場合、例外を発生させずフォームを再表示する' do
+      expect do
+        post players_path, params: {
+          player: {
+            name: '田中太郎', name_kana: 'たなかたろう', category: 'high_school',
+            draft_years_text: 'abc'
+          }
+        }
+      end.not_to raise_error
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.body).to include('name="player[draft_years_text]"')
+    end
+
+    it '他の項目が原因でバリデーションに失敗しても、入力したドラフト候補年がフォームに残る' do
+      post players_path, params: {
+        player: {
+          name: '', name_kana: 'たなかたろう', category: 'high_school',
+          draft_years_text: '2024, 2025'
+        }
+      }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.body).to include('value="2024, 2025"')
+    end
   end
 
   describe 'GET /players/:id/edit' do
@@ -144,6 +189,35 @@ RSpec.describe 'Players', type: :request do
       get edit_player_path(player)
 
       expect(response.body).to include('value="2024, 2023"')
+    end
+  end
+
+  describe 'PATCH /players/:id' do
+    it '無効なドラフト候補年トークンを含む場合、例外を発生させずフォームを再表示する' do
+      player = create(:player)
+
+      expect do
+        patch player_path(player), params: {
+          player: { draft_years_text: 'abc' }
+        }
+      end.not_to raise_error
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.body).to include('name="player[draft_years_text]"')
+    end
+
+    it '他の項目が原因でバリデーションに失敗しても、入力した新しいドラフト候補年がフォームに残る（DBの古い値ではない）' do
+      player = create(:player)
+      player.draft_years_text = '2020'
+      player.save!
+
+      patch player_path(player), params: {
+        player: { name: '', draft_years_text: '2024, 2025' }
+      }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.body).to include('value="2024, 2025"')
+      expect(response.body).not_to include('value="2020"')
     end
   end
 end

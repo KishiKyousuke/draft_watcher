@@ -60,6 +60,62 @@ RSpec.describe Player, type: :model do
 
       expect(player.reload.player_draft_years).to be_empty
     end
+
+    it '数値以外のトークンが含まれる場合は例外を発生させず、バリデーションエラーになる' do
+      player = create(:player)
+
+      expect do
+        player.draft_years_text = 'abc'
+      end.not_to raise_error
+
+      expect(player.valid?).to be false
+      expect(player.errors[:draft_years_text]).to be_present
+    end
+
+    it '数値以外のトークンが含まれる場合、saveは例外を発生させずfalseを返す' do
+      player = create(:player)
+      player.draft_years_text = 'abc'
+
+      expect { player.save }.not_to raise_error
+      expect(player.save).to be false
+    end
+
+    it '1900年以下の年は無効なトークンとして扱われる' do
+      player = create(:player)
+      player.draft_years_text = '1900'
+
+      expect(player.valid?).to be false
+      expect(player.errors[:draft_years_text]).to be_present
+    end
+
+    it '有効なトークンと無効なトークンが混在する場合も例外を発生させない' do
+      player = create(:player)
+
+      expect do
+        player.draft_years_text = '2024, abc'
+      end.not_to raise_error
+
+      expect(player.valid?).to be false
+      expect(player.errors[:draft_years_text]).to be_present
+    end
+  end
+
+  describe '#draft_years_text のキャッシュ挙動（フォーム再表示用）' do
+    it 'setterで設定した直後は、DBに保存されていなくてもgetterがその値を返す' do
+      player = create(:player)
+      player.player_draft_years.create!(year: 2020)
+
+      player.draft_years_text = '2024, 2025'
+
+      expect(player.draft_years_text).to eq('2024, 2025')
+    end
+
+    it 'setterを呼んでいない場合はDBの値がそのまま返る' do
+      player = create(:player)
+      player.player_draft_years.create!(year: 2020)
+
+      expect(player.draft_years_text).to eq('2020')
+    end
   end
 
   describe '#latest_draft_year' do

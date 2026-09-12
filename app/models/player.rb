@@ -7,6 +7,7 @@ class Player < ApplicationRecord
   validates :name, presence: true
   validates :name_kana, presence: true
   validates :category, presence: true
+  validate :draft_years_text_tokens_are_valid
 
   enum :category, {
     high_school: 0,
@@ -27,18 +28,31 @@ class Player < ApplicationRecord
 
   # カンマ区切りの複数ドラフト候補年を返す・設定するための仮想属性
   def draft_years_text
+    return @draft_years_text if defined?(@draft_years_text) && !@draft_years_text.nil?
+
     player_draft_years.order(year: :desc).pluck(:year).join(', ')
   end
 
   def draft_years_text=(text)
-    years = text.to_s.split(',').map(&:strip).reject(&:blank?).map(&:to_i).uniq
+    @draft_years_text = text
+    @draft_years_text_invalid_tokens = []
+
+    years = text.to_s.split(',').map(&:strip).reject(&:blank?).map do |token|
+      if token.match?(/\A\d+\z/) && token.to_i > 1900
+        token.to_i
+      else
+        @draft_years_text_invalid_tokens << token
+        nil
+      end
+    end.compact.uniq
+
     existing_by_year = player_draft_years.index_by(&:year)
 
     self.player_draft_years = years.map { |year| existing_by_year[year] || PlayerDraftYear.new(year: year) }
   end
 
   def latest_draft_year
-    player_draft_years.maximum(:year)
+    player_draft_years.map(&:year).max
   end
 
   # 本番ドラフトの確定した指名のみを返す
@@ -49,5 +63,13 @@ class Player < ApplicationRecord
   # 本番ドラフトで指名されているかを判定
   def drafted_in_official?
     confirmed_picks.exists?
+  end
+
+  private
+
+  def draft_years_text_tokens_are_valid
+    return if @draft_years_text_invalid_tokens.blank?
+
+    errors.add(:draft_years_text, "に無効な値が含まれています (値: #{@draft_years_text_invalid_tokens.join(', ')})")
   end
 end

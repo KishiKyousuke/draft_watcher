@@ -27,6 +27,7 @@ ja:
         age: 年齢
         description: 寸評
         draft_years_text: ドラフト候補年
+        player_draft_years: ドラフト候補年
         categories:
           high_school: 高校生
           university: 大学生

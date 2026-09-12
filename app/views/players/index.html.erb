@@ -133,9 +133,10 @@
                   <%= "#{player.age}#{t('units.age')}" if player.age %>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  <% if player.latest_draft_year %>
+                  <% latest_draft_year = player.latest_draft_year %>
+                  <% if latest_draft_year %>
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                      <%= player.latest_draft_year %><%= t('units.year') %>
+                      <%= latest_draft_year %><%= t('units.year') %>
                     </span>
                   <% end %>
                 </td>

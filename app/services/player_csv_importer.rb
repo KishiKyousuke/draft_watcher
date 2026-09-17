@@ -39,6 +39,7 @@ class PlayerCsvImporter
     category = convert_category(row['カテゴリ'], line_number)
     pitching_batting = convert_pitching_batting(row['投打'], line_number)
     position_ids = convert_positions(row['ポジション'], line_number)
+    draft_years = convert_draft_years(row['ドラフト候補年'], line_number)
 
     player = Player.new(
       category: category,
@@ -50,7 +51,8 @@ class PlayerCsvImporter
       weight: row['体重'],
       age: row['年齢'],
       description: row['寸評'],
-      position_ids: position_ids
+      position_ids: position_ids,
+      draft_years_text: draft_years.join(', ')
     )
 
     unless player.save
@@ -97,5 +99,18 @@ class PlayerCsvImporter
     end
 
     position_ids
+  end
+
+  def convert_draft_years(draft_year_text, line_number)
+    return [] if draft_year_text.blank?
+
+    draft_year_text.split('/').map do |year_text|
+      year_text = year_text.strip
+      unless year_text.match?(/\A\d+\z/)
+        raise ImportError, "#{line_number}行目: ドラフト候補年の形式が正しくありません (値: #{year_text})"
+      end
+
+      year_text.to_i
+    end
   end
 end

@@ -10,6 +10,7 @@ ja:
       player: 選手
       team: チーム
       position: ポジション
+      player_draft_year: ドラフト候補年
       pick: 指名結果
       draft: ドラフト会議
       team_standing: チーム順位
@@ -25,6 +26,8 @@ ja:
         weight: 体重
         age: 年齢
         description: 寸評
+        draft_years_text: ドラフト候補年
+        player_draft_years: ドラフト候補年
         categories:
           high_school: 高校生
           university: 大学生
@@ -48,6 +51,8 @@ ja:
       position:
         name: ポジション名
         short_name: 略称
+      player_draft_year:
+        year: 年
       pick:
         year: 年度
         draft: ドラフト
@@ -75,6 +80,7 @@ ja:
       no_players: ドラフト候補選手が登録されていません。
       height_weight: 身長/体重
       pick_result: 指名結果
+      draft_year: 候補年
       not_registered: 未登録
       not_drafted: 未指名
       training: "(育成)"
@@ -83,6 +89,7 @@ ja:
         query_placeholder: 選手名で検索
         category: カテゴリ
         position: ポジション
+        draft_year: ドラフト候補年
         undrafted_only: 未指名のみ
         submit: 検索
         clear: クリア
@@ -110,6 +117,7 @@ ja:
       back_to_index: 一覧に戻る
     form:
       select_prompt: 選択してください
+      draft_years_text_hint: "カンマ区切りで複数入力できます（例: 2024, 2025）"
       categories:
         high_school: 高校生
         university: 大学生

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_20_130015) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_10_145730) do
   create_table "drafts", force: :cascade do |t|
     t.integer "year", null: false
     t.boolean "starts_with_central", default: true
@@ -32,6 +32,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_20_130015) do
     t.index ["draft_id"], name: "index_picks_on_draft_id"
     t.index ["player_id"], name: "index_picks_on_player_id"
     t.index ["team_id"], name: "index_picks_on_team_id"
+  end
+
+  create_table "player_draft_years", force: :cascade do |t|
+    t.integer "player_id", null: false
+    t.integer "year", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["player_id", "year"], name: "index_player_draft_years_on_player_id_and_year", unique: true
+    t.index ["player_id"], name: "index_player_draft_years_on_player_id"
   end
 
   create_table "player_positions", force: :cascade do |t|
@@ -86,6 +95,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_20_130015) do
   add_foreign_key "picks", "drafts"
   add_foreign_key "picks", "players"
   add_foreign_key "picks", "teams"
+  add_foreign_key "player_draft_years", "players"
   add_foreign_key "player_positions", "players"
   add_foreign_key "player_positions", "positions"
   add_foreign_key "team_standings", "drafts"

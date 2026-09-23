@@ -44,7 +44,7 @@ class PlayersController < ApplicationController
   end
 
   def new
-    @player = Player.new
+    @player = Player.new(draft_years_text: Date.current.year.to_s)
     @positions = Position.all
   end
 

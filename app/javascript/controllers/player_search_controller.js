@@ -6,6 +6,15 @@ export default class extends Controller {
 
   connect() {
     this.timeout = null
+
+    // ドラフトが切り替わったら、その年度の候補選手で検索し直す
+    this.search = this.search.bind(this)
+    this.draftSelect = this.element.closest("form")?.querySelector("[name='pick[draft_id]']")
+    this.draftSelect?.addEventListener("change", this.search)
+  }
+
+  disconnect() {
+    this.draftSelect?.removeEventListener("change", this.search)
   }
 
   search() {
@@ -19,7 +28,9 @@ export default class extends Controller {
     }
 
     this.timeout = setTimeout(() => {
-      const url = `${this.urlValue}?query=${encodeURIComponent(query)}`
+      const params = new URLSearchParams({ query })
+      if (this.draftSelect?.value) params.append("draft_id", this.draftSelect.value)
+      const url = `${this.urlValue}?${params}`
 
       fetch(url, {
         headers: {

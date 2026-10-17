@@ -9,6 +9,9 @@ class PicksController < ApplicationController
     pick_params[:draft_id] = params[:draft_id] if params[:draft_id].present?
     pick_params[:team_id] = params[:team_id] if params[:team_id].present?
     pick_params[:player_id] = params[:player_id] if params[:player_id].present?
+    if params[:training_player].present?
+      pick_params[:training_player] = ActiveModel::Type::Boolean.new.cast(params[:training_player])
+    end
 
     @pick = Pick.new(pick_params)
 
@@ -16,8 +19,11 @@ class PicksController < ApplicationController
     if params[:draft_id].present?
       @draft = Draft.find(params[:draft_id])
 
-      # 指名順位を自動計算
-      if params[:team_id].present?
+      if params[:draft_round].present?
+        # ドラフト表の特定マスからの遷移: 順位が指定済みなのでそれを使う
+        @pick.draft_round = params[:draft_round].to_i
+      elsif params[:team_id].present?
+        # 指名順位を自動計算
         @pick.draft_round = @draft.next_draft_round_for_team(Team.find(params[:team_id]))
       end
     end

@@ -6,18 +6,7 @@ class DraftsController < ApplicationController
   end
 
   def show
-    leagues = @draft.starts_with_central? ? [Team.leagues[:central], Team.leagues[:pacific]] : [Team.leagues[:pacific], Team.leagues[:central]]
-    @team_standings = @draft.team_standings
-                            .eager_load(:team)
-                            .order(rank: :desc)
-                            .in_order_of(:league, leagues)
-
-    # 各球団の指名結果を取得（N+1対策）
-    # 支配下指名→育成指名の順、各グループ内で順位昇順に並び替え
-    @picks_by_team = @draft.picks
-                           .includes(:player, :team)
-                           .group_by(&:team_id)
-                           .transform_values { |picks| picks.sort_by { |p| [p.training_player ? 1 : 0, p.draft_round] } }
+    @board = DraftBoard.new(@draft)
   end
 
   def new

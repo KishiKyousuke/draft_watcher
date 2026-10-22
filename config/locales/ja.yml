@@ -91,6 +91,11 @@ ja:
         position: ポジション
         draft_year: ドラフト候補年
         undrafted_only: 未指名のみ
+        sort: 並び順
+        sort_default: 候補年の新しい順
+        sort_draft_year_asc: 候補年の古い順
+        sort_created_at_desc: 登録日時の新しい順
+        sort_created_at_asc: 登録日時の古い順
         submit: 検索
         clear: クリア
     show:

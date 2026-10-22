@@ -50,6 +50,17 @@
         </div>
 
         <div class="flex items-center gap-4">
+          <div class="flex items-center gap-2">
+            <%= form.label :sort, t('players.index.search.sort'), class: "text-sm font-medium text-gray-700" %>
+            <%= form.select :sort,
+                options_for_select([[t('players.index.search.sort_default'), ''],
+                                    [t('players.index.search.sort_draft_year_asc'), 'draft_year_asc'],
+                                    [t('players.index.search.sort_created_at_desc'), 'created_at_desc'],
+                                    [t('players.index.search.sort_created_at_asc'), 'created_at_asc']], params[:sort]),
+                {},
+                { class: "block rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-4 py-2 border" } %>
+          </div>
+
           <div class="flex items-center">
             <%= form.check_box :undrafted_only, { checked: params[:undrafted_only] == '1', class: "rounded border-gray-300 text-blue-600 focus:ring-blue-500" }, '1', '0' %>
             <%= form.label :undrafted_only, t('players.index.search.undrafted_only'), class: "ml-2 text-sm text-gray-700" %>

@@ -31,7 +31,7 @@ class PlayersController < ApplicationController
 
     @players = @players.left_joins(:player_draft_years)
                        .group('players.id')
-                       .order(Arel.sql('MAX(player_draft_years.year) DESC, players.created_at DESC'))
+                       .order(Arel.sql(players_order_sql))
                        .distinct
                        .page(params[:page]).per(50)
     @positions = Position.all
@@ -81,6 +81,30 @@ class PlayersController < ApplicationController
   end
 
   private
+
+  SORT_DIRECTIONS = { 'created_at_asc' => 'ASC', 'created_at_desc' => 'DESC' }.freeze
+
+  # 最新の候補年のplayer_draft_yearの登録日時
+  LATEST_DRAFT_YEAR_CREATED_AT_SQL = <<~SQL.squish.freeze
+    (SELECT latest.created_at FROM player_draft_years latest
+     WHERE latest.player_id = players.id ORDER BY latest.year DESC LIMIT 1)
+  SQL
+
+  def players_order_sql
+    latest_created_at = LATEST_DRAFT_YEAR_CREATED_AT_SQL
+
+    # 候補年の古い順（候補年がない選手は末尾）、同じなら最新の候補年の登録日時の古い順、さらに同じならIDで並べる
+    if params[:sort] == 'draft_year_asc'
+      return 'MAX(player_draft_years.year) IS NULL, MAX(player_draft_years.year) ASC, ' \
+             "#{latest_created_at} ASC, players.id ASC"
+    end
+
+    direction = SORT_DIRECTIONS[params[:sort]]
+    return 'MAX(player_draft_years.year) DESC, players.created_at DESC' if direction.nil?
+
+    # 最新の候補年の登録日時（候補年がない選手は末尾）、同じならIDで並べる
+    "#{latest_created_at} IS NULL, #{latest_created_at} #{direction}, players.id #{direction}"
+  end
 
   def player_params
     params.require(:player).permit(:name, :name_kana, :category, :affiliation, :pitching_batting, :height, :weight, :age, :description, :draft_years_text, position_ids: [])
